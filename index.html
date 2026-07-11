@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Bé Ôn Tập – Lớp 1 lên Lớp 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFF9EE; --ink:#2B5FB8; --ink-dark:#1D3F7A;
+  --red:#E84855; --star:#FFC94D; --green:#3BB273;
+  --line:#E8DFC8; --text:#3A3A3A;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Nunito',sans-serif;color:var(--text);
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:26px 26px;
+  position:relative;
+}
+body::before{
+  content:'';position:fixed;top:0;bottom:0;left:34px;width:2px;
+  background:rgba(232,72,85,.35);z-index:0;pointer-events:none;
+}
+#app{max-width:520px;margin:0 auto;padding:20px 18px 40px;position:relative;z-index:1;min-height:100%}
+h1,h2,.display{font-family:'Baloo 2',cursive}
+
+/* ---- header ---- */
+.top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.top .back{
+  border:none;background:#fff;border:2px solid var(--ink);color:var(--ink);
+  width:42px;height:42px;border-radius:12px;font-size:20px;font-weight:800;cursor:pointer;
+  box-shadow:0 3px 0 var(--ink);flex:none;
+}
+.top .back:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.crumb{font-weight:700;color:var(--ink-dark);font-size:15px}
+
+/* ---- home ---- */
+.hero{text-align:center;padding:26px 10px 18px}
+.hero .mascot{font-size:58px;line-height:1}
+.hero h1{font-size:30px;color:var(--ink-dark);letter-spacing:.5px;margin-top:6px}
+.hero h1 .accent{color:var(--red)}
+.hero p{font-size:15px;color:#7a715e;margin-top:4px;font-weight:700}
+.starbar{margin:10px auto 0;display:inline-flex;gap:6px;background:#fff;border:2px solid var(--star);
+  border-radius:999px;padding:6px 16px;font-weight:800;color:#a8760a;font-size:15px;align-items:center}
+
+.subject{display:grid;gap:14px;margin-top:18px}
+.card{
+  background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:16px 18px;
+  box-shadow:0 4px 0 var(--ink);cursor:pointer;display:flex;gap:14px;align-items:center;
+  transition:transform .08s;
+}
+.card:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.card .icon{font-size:38px;flex:none}
+.card .t{font-family:'Baloo 2',cursive;font-size:20px;color:var(--ink-dark)}
+.card .d{font-size:13.5px;color:#8a8272;font-weight:700}
+.card.tv{border-color:var(--red);box-shadow:0 4px 0 var(--red)}
+.card.tv:active{box-shadow:0 1px 0 var(--red)}
+.card.tv .t{color:#a02730}
+.card .best{margin-left:auto;flex:none;text-align:center;font-size:12px;font-weight:800;color:#a8760a}
+.card .best b{display:block;font-size:18px;font-family:'Baloo 2',cursive}
+
+/* ---- quiz ---- */
+.progress{height:14px;background:#fff;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin-bottom:6px}
+.progress .fill{height:100%;background:linear-gradient(90deg,var(--star),#ffb020);width:0%;transition:width .35s;border-radius:999px}
+.pcount{font-size:13px;font-weight:800;color:var(--ink-dark);text-align:right;margin-bottom:12px}
+
+.passage{
+  background:#fff;border:2px dashed var(--red);border-radius:14px;padding:12px 14px;
+  font-size:15px;line-height:1.65;margin-bottom:14px;font-weight:600;color:#4d443a;
+}
+.passage .pt{font-family:'Baloo 2',cursive;color:#a02730;text-align:center;margin-bottom:4px;font-size:16px}
+
+.qbox{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:18px;box-shadow:0 4px 0 var(--ink)}
+.qtext{font-size:19px;font-weight:800;color:var(--ink-dark);line-height:1.5;font-family:'Baloo 2',cursive}
+.answers{display:grid;gap:11px;margin-top:16px}
+.ans{
+  border:2.5px solid #cfc6ae;background:#fffdf7;border-radius:14px;padding:14px 14px;
+  font-size:17px;font-weight:800;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;
+  color:var(--text);display:flex;align-items:center;gap:10px;min-height:56px;
+}
+.ans .key{
+  flex:none;width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',cursive;font-size:15px;
+}
+.ans:active{background:#fff3d6}
+.ans.correct{border-color:var(--green);background:#e9f9ef}
+.ans.correct .key{background:var(--green)}
+.ans.wrong{border-color:var(--red);background:#fdeaec}
+.ans.wrong .key{background:var(--red)}
+.ans:disabled{cursor:default;opacity:1}
+.ans.dim{opacity:.45}
+
+.numpad{margin-top:16px}
+.numshow{
+  border:2.5px dashed var(--ink);border-radius:14px;min-height:60px;display:flex;align-items:center;
+  justify-content:center;font-family:'Baloo 2',cursive;font-size:32px;color:var(--ink-dark);background:#fffdf7;
+  letter-spacing:4px;
+}
+.pads{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.pad{
+  border:2px solid var(--ink);background:#fff;border-radius:12px;padding:13px 0;font-size:20px;
+  font-family:'Baloo 2',cursive;color:var(--ink-dark);cursor:pointer;box-shadow:0 3px 0 var(--ink);
+}
+.pad:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.pad.act{background:var(--star);border-color:#d99a00;box-shadow:0 3px 0 #d99a00;color:#6b4b00}
+
+.feedback{
+  margin-top:14px;border-radius:14px;padding:13px 15px;font-weight:800;font-size:16px;display:none;
+  animation:pop .25s;
+}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.feedback.ok{display:block;background:#e9f9ef;border:2px solid var(--green);color:#1e7a47}
+.feedback.no{display:block;background:#fdeaec;border:2px solid var(--red);color:#a02730}
+
+.nextbtn{
+  margin-top:16px;width:100%;border:none;background:var(--ink);color:#fff;font-family:'Baloo 2',cursive;
+  font-size:20px;padding:15px;border-radius:16px;cursor:pointer;box-shadow:0 4px 0 var(--ink-dark);display:none;
+}
+.nextbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink-dark)}
+.nextbtn.show{display:block}
+
+/* ---- order / match / svg ---- */
+.qsvgwrap{margin-top:12px;text-align:center}
+.qsvg{width:150px;height:auto}
+.qsvg.wide{width:230px}
+.slots{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.slot{min-width:54px;height:50px;border:2.5px dashed var(--ink);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',cursive;font-size:18px;color:var(--ink-dark);background:#fffdf7;padding:0 10px}
+.slot.ok{border-color:var(--green);border-style:solid;background:#e9f9ef}
+.slot.no{border-color:var(--red);border-style:solid;background:#fdeaec}
+.pool{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:12px}
+.pill{border:2px solid var(--ink);background:#fff;border-radius:12px;padding:11px 15px;font-family:'Baloo 2',cursive;font-size:18px;color:var(--ink-dark);box-shadow:0 3px 0 var(--ink);cursor:pointer}
+.pill:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.pill.used{opacity:.22;pointer-events:none}
+.matchgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mbtn{width:100%;border:2.5px solid #cfc6ae;background:#fffdf7;border-radius:12px;padding:13px 6px;font-family:'Baloo 2',cursive;font-size:16.5px;color:var(--text);cursor:pointer;margin-bottom:9px;min-height:54px}
+.mbtn.sel{border-color:var(--ink);background:#eaf1ff}
+.ctrlrow{display:flex;gap:10px;margin-top:12px}
+.ctrlrow .pad{flex:1}
+
+/* ---- result ---- */
+.result{text-align:center;padding-top:30px}
+.result .big{font-size:78px;line-height:1;animation:bounce .8s}
+@keyframes bounce{0%{transform:scale(.3)}55%{transform:scale(1.15)}100%{transform:scale(1)}}
+.result h2{font-size:28px;color:var(--ink-dark);margin-top:8px}
+.scorecard{
+  background:#fff;border:2.5px solid var(--star);border-radius:20px;padding:18px;margin:18px auto;
+  max-width:320px;box-shadow:0 4px 0 #d99a00;
+}
+.scorecard .num{font-family:'Baloo 2',cursive;font-size:56px;color:var(--red)}
+.scorecard .num small{font-size:24px;color:#9a917d}
+.scorecard .msg{font-weight:800;color:#6b4b00;font-size:16px;margin-top:2px}
+.stars{font-size:30px;letter-spacing:4px;margin-top:6px}
+.rbtns{display:grid;gap:12px;max-width:320px;margin:0 auto}
+.rbtn{border:2.5px solid var(--ink);background:#fff;color:var(--ink-dark);border-radius:14px;padding:14px;
+  font-family:'Baloo 2',cursive;font-size:18px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.rbtn.primary{background:var(--ink);color:#fff;box-shadow:0 3px 0 var(--ink-dark)}
+.rbtn:active{transform:translateY(2px)}
+
+.confetti{position:fixed;top:-12px;font-size:22px;z-index:50;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(560deg)}}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ================= HÌNH VẼ (SVG) ================= */
+function clockSVG(h){
+  let nums = '';
+  for(let n=1;n<=12;n++){
+    const a = n*30*Math.PI/180;
+    const x = 50 + 36*Math.sin(a), y = 50 - 36*Math.cos(a) + 3.5;
+    nums += `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-size="10" font-weight="bold" fill="#1D3F7A" font-family="Baloo 2,cursive">${n}</text>`;
+  }
+  const angle = (h%12)*30;
+  return `<svg viewBox="0 0 100 100" class="qsvg">
+    <circle cx="50" cy="50" r="47" fill="#fff" stroke="#2B5FB8" stroke-width="4"/>
+    ${nums}
+    <line x1="50" y1="50" x2="50" y2="16" stroke="#E84855" stroke-width="2.6" stroke-linecap="round"/>
+    <line x1="50" y1="50" x2="50" y2="30" stroke="#1D3F7A" stroke-width="4" stroke-linecap="round" transform="rotate(${angle} 50 50)"/>
+    <circle cx="50" cy="50" r="3.5" fill="#1D3F7A"/>
+  </svg>`;
+}
+const SVG_SQ_DIAG = `<svg viewBox="0 0 100 100" class="qsvg"><rect x="10" y="10" width="80" height="80" fill="#FFF3D6" stroke="#2B5FB8" stroke-width="4"/><line x1="10" y1="10" x2="90" y2="90" stroke="#2B5FB8" stroke-width="4"/></svg>`;
+const SVG_GRID4 = `<svg viewBox="0 0 100 100" class="qsvg"><rect x="10" y="10" width="80" height="80" fill="#E9F9EF" stroke="#2B5FB8" stroke-width="4"/><line x1="50" y1="10" x2="50" y2="90" stroke="#2B5FB8" stroke-width="4"/><line x1="10" y1="50" x2="90" y2="50" stroke="#2B5FB8" stroke-width="4"/></svg>`;
+const SVG_MIX = `<svg viewBox="0 0 230 70" class="qsvg wide">
+ <polygon points="25,10 45,55 5,55" fill="#FFC94D" stroke="#B8860B" stroke-width="3"/>
+ <circle cx="75" cy="35" r="22" fill="#8ED1B2" stroke="#2E8B57" stroke-width="3"/>
+ <polygon points="120,10 140,55 100,55" fill="#FFC94D" stroke="#B8860B" stroke-width="3"/>
+ <rect x="152" y="14" width="42" height="42" fill="#A8C6F5" stroke="#2B5FB8" stroke-width="3"/>
+ <polygon points="222,10 242,55 202,55" fill="#FFC94D" stroke="#B8860B" stroke-width="3" transform="translate(-14,0)"/>
+</svg>`;
+const SVG_HOUSE = `<svg viewBox="0 0 100 100" class="qsvg"><polygon points="50,8 88,42 12,42" fill="#F4A6B0" stroke="#C0394B" stroke-width="3.5"/><rect x="20" y="42" width="60" height="48" fill="#FFF3D6" stroke="#B8860B" stroke-width="3.5"/></svg>`;
+
+/* ================= DỮ LIỆU ĐỀ ================= */
+const QUIZZES = [
+{
+ id:'toan1', subject:'toan', icon:'🔢', title:'Toán – Đề số 1',
+ desc:'Số, phép tính, hình khối, xem giờ',
+ questions:[
+  {q:'Số 85 gồm:', a:['8 và 5','8 chục và 5 đơn vị','5 chục và 8 đơn vị','85 chục'], c:1, e:'85 = 8 chục + 5 đơn vị.'},
+  {q:'Số liền sau của số 89 là số nào?', type:'num', c:'90', e:'89 thêm 1 là 90.'},
+  {q:'40 + 30 – 20 = ?', type:'num', c:'50', e:'40 + 30 = 70, rồi 70 – 20 = 50.'},
+  {q:'Viên xúc xắc 🎲 có dạng khối gì?', a:['Khối hộp chữ nhật','Khối lập phương','Hình vuông','Hình tròn'], c:1, e:'Xúc xắc có 6 mặt vuông bằng nhau → khối lập phương.'},
+  {q:'Kim ngắn chỉ số 8, kim dài chỉ số 12. Đồng hồ chỉ mấy giờ?', a:['12 giờ','8 giờ','9 giờ','7 giờ'], c:1, e:'Kim dài chỉ 12 là giờ đúng, kim ngắn chỉ 8 → 8 giờ.'},
+  {q:'Băng giấy đỏ dài 20 cm, băng giấy xanh dài 15 cm. Băng đỏ dài hơn băng xanh mấy xăng-ti-mét?', type:'num', c:'5', e:'20 – 15 = 5 (cm).'},
+  {q:'34 + 52 = ?', type:'num', c:'86', e:'4 + 2 = 6, 3 + 5 = 8 → 86.'},
+  {q:'89 – 46 = ?', type:'num', c:'43', e:'9 – 6 = 3, 8 – 4 = 4 → 43.'},
+  {q:'Trên xe buýt có 25 hành khách, thêm 12 hành khách lên xe. Trên xe có tất cả bao nhiêu hành khách?', type:'num', c:'37', e:'25 + 12 = 37 (hành khách).'},
+  {q:'Số nào lớn nhất: 93 ; 74 ; 17 ; 84 ?', a:['93','74','17','84'], c:0, e:'So hàng chục: 9 lớn nhất → 93.'},
+ ]
+},
+{
+ id:'toan2', subject:'toan', icon:'➕', title:'Toán – Đề số 2',
+ desc:'Cấu tạo số, tính nhẩm, đo độ dài',
+ questions:[
+  {q:'Số liền sau của số 49 là số nào?', type:'num', c:'50', e:'49 thêm 1 là 50.'},
+  {q:'Số tròn chục lớn hơn 63 và bé hơn 78 là:', a:['60','65','70','80'], c:2, e:'Số tròn chục giữa 63 và 78 là 70.'},
+  {q:'Hộp quà 🎁, thùng giấy 📦 có dạng:', a:['Khối lập phương','Khối hộp chữ nhật','Hình chữ nhật','Hình vuông'], c:1, e:'Các hộp dài, dẹt là khối hộp chữ nhật.'},
+  {q:'Một tuần lễ em đi học các ngày nào?', a:['Thứ Hai đến thứ Sáu','Thứ Hai đến Chủ nhật','Thứ Bảy và Chủ nhật','Thứ Ba đến thứ Bảy'], c:0, e:'Em học từ thứ Hai đến thứ Sáu, nghỉ thứ Bảy và Chủ nhật.'},
+  {q:'90 – 40 ... 20 + 30. Điền dấu gì?', a:['>','<','='], c:2, e:'90 – 40 = 50 và 20 + 30 = 50 → bằng nhau.'},
+  {q:'Số 27 gồm mấy chục?', type:'num', c:'2', e:'27 = 2 chục và 7 đơn vị.'},
+  {q:'20 + 60 – 30 = ?', type:'num', c:'50', e:'20 + 60 = 80, rồi 80 – 30 = 50.'},
+  {q:'95 – 5 – 40 = ?', type:'num', c:'50', e:'95 – 5 = 90, rồi 90 – 40 = 50.'},
+  {q:'Đoạn dây thứ nhất dài 45 cm. Đoạn dây thứ hai ngắn hơn 20 cm. Đoạn dây thứ hai dài bao nhiêu cm?', type:'num', c:'25', e:'45 – 20 = 25 (cm).'},
+  {q:'Số gồm 9 chục và 0 đơn vị là số nào?', type:'num', c:'90', e:'9 chục = 90.'},
+ ]
+},
+{
+ id:'toan3', subject:'toan', icon:'🧠', title:'Toán – Đề số 3',
+ desc:'Dãy số, đặt tính, toán có lời văn',
+ questions:[
+  {q:'Dãy số: 55 ; 60 ; 65 ; ? . Số tiếp theo là:', type:'num', c:'70', e:'Đếm thêm 5: 65 + 5 = 70.'},
+  {q:'Dãy số: 100 ; 99 ; 98 ; ? . Số tiếp theo là:', type:'num', c:'97', e:'Đếm lùi 1: 98 – 1 = 97.'},
+  {q:'61 + 27 = ?', type:'num', c:'88', e:'1 + 7 = 8, 6 + 2 = 8 → 88.'},
+  {q:'94 – 71 = ?', type:'num', c:'23', e:'4 – 1 = 3, 9 – 7 = 2 → 23.'},
+  {q:'Đồ vật nào có dạng khối lập phương?', a:['Hộp sữa','Viên xúc xắc','Quả bóng','Quyển sách'], c:1, e:'Viên xúc xắc có 6 mặt vuông bằng nhau.'},
+  {q:'Hôm nay là thứ Bảy. Ngày mai là thứ mấy?', a:['Thứ Sáu','Chủ nhật','Thứ Hai','Thứ Bảy'], c:1, e:'Sau thứ Bảy là Chủ nhật.'},
+  {q:'Hôm nay là ngày 15. Hôm qua là ngày bao nhiêu?', type:'num', c:'14', e:'15 – 1 = 14.'},
+  {q:'Mai gấp được 36 ngôi sao, tặng bạn 16 ngôi sao. Mai còn lại bao nhiêu ngôi sao?', type:'num', c:'20', e:'36 – 16 = 20 (ngôi sao).'},
+  {q:'80 + 16 = ?', type:'num', c:'96', e:'80 + 16 = 96.'},
+  {q:'Từ các chữ số 2 ; 0 ; 6 viết được mấy số có hai chữ số khác nhau?', a:['2 số','4 số','6 số','3 số'], c:1, e:'Đó là 20, 26, 60, 62 — số không được bắt đầu bằng 0.'},
+ ]
+},
+{
+ id:'tv1', subject:'tv', icon:'🌳', title:'Tiếng Việt – Đề số 1',
+ desc:'Đọc hiểu: Cây bàng ở sân trường',
+ passage:{title:'Cây bàng ở sân trường', text:'Giữa sân trường em có một cây bàng to. Mùa hè, cây bàng xòe tán lá xanh um như chiếc ô khổng lồ che mát cho chúng em vui chơi. Giờ ra chơi, chúng em thường ngồi dưới gốc bàng đọc truyện, chơi ô ăn quan. Chúng em ai cũng yêu quý cây bàng.'},
+ questions:[
+  {q:'Cây bàng được trồng ở đâu?', a:['Trong công viên','Giữa sân trường','Trước cổng nhà','Bên bờ sông'], c:1, e:'Bài đọc viết: "Giữa sân trường em có một cây bàng to."'},
+  {q:'Tán lá cây bàng được so sánh với cái gì?', a:['Chiếc quạt','Chiếc ô khổng lồ','Đám mây','Chiếc nón'], c:1, e:'Tán lá xanh um như chiếc ô khổng lồ.'},
+  {q:'Giờ ra chơi, các bạn làm gì dưới gốc bàng?', a:['Đá bóng','Nhảy dây','Đọc truyện, chơi ô ăn quan','Ngủ trưa'], c:2, e:'Các bạn ngồi đọc truyện, chơi ô ăn quan.'},
+  {q:'Từ nào trong bài chỉ màu sắc?', a:['khổng lồ','xanh','vui chơi','yêu quý'], c:1, e:'"Xanh um" — xanh là từ chỉ màu sắc.'},
+  {q:'Điền c hay k: "...ây bàng"', a:['c → cây bàng','k → kây bàng'], c:0, e:'Trước â viết c: cây bàng.'},
+  {q:'Điền c hay k: "thước ...ẻ"', a:['c → thước cẻ','k → thước kẻ'], c:1, e:'Trước e, ê, i viết k: thước kẻ.'},
+  {q:'"Sân trường em có một cây bàng to ▢" — điền dấu gì?', a:['Dấu chấm (.)','Dấu chấm hỏi (?)'], c:0, e:'Đây là câu kể → dấu chấm.'},
+  {q:'"Bạn có thích chơi ô ăn quan không ▢" — điền dấu gì?', a:['Dấu chấm (.)','Dấu chấm hỏi (?)'], c:1, e:'Đây là câu hỏi → dấu chấm hỏi.'},
+ ]
+},
+{
+ id:'tv2', subject:'tv', icon:'👴', title:'Tiếng Việt – Đề số 2',
+ desc:'Đọc hiểu: Đi học cùng ông',
+ passage:{title:'Đi học cùng ông', text:'Sáng nào ông cũng đưa Nam đến trường. Trên đường đi, ông kể cho Nam nghe bao nhiêu chuyện hay. Ông dặn Nam phải chăm học, vâng lời cô giáo. Đến cổng trường, Nam khoanh tay chào ông rồi tung tăng chạy vào lớp. Nam thầm nghĩ: mình phải học thật giỏi để ông vui.'},
+ questions:[
+  {q:'Ai đưa Nam đến trường mỗi sáng?', a:['Bố của Nam','Mẹ của Nam','Ông của Nam','Chị của Nam'], c:2, e:'"Sáng nào ông cũng đưa Nam đến trường."'},
+  {q:'Trên đường đi, ông làm gì?', a:['Kể chuyện hay cho Nam nghe','Mua quà cho Nam','Dạy Nam làm toán','Hát cho Nam nghe'], c:0, e:'Ông kể cho Nam nghe bao nhiêu chuyện hay.'},
+  {q:'Ông dặn Nam điều gì?', a:['Ăn thật nhiều','Chăm học, vâng lời cô giáo','Chơi vui vẻ','Về nhà sớm'], c:1, e:'Ông dặn Nam phải chăm học, vâng lời cô giáo.'},
+  {q:'Vì sao Nam muốn học thật giỏi?', a:['Để được thưởng','Để ông vui','Để được đi chơi','Để hơn bạn'], c:1, e:'Nam nghĩ: mình phải học giỏi để ông vui.'},
+  {q:'Điền ng hay ngh: "...ề nghiệp"', a:['ng → ngề','ngh → nghề'], c:1, e:'Trước e, ê, i viết ngh: nghề nghiệp.'},
+  {q:'Điền ng hay ngh: "...ọn cờ"', a:['ng → ngọn cờ','ngh → nghọn cờ'], c:0, e:'Trước o viết ng: ngọn cờ.'},
+  {q:'Khi gặp cô giáo ở trường, em nói gì?', a:['Em chào cô ạ!','Cô đi đâu đấy?','Chào bạn!','Không nói gì'], c:0, e:'Gặp thầy cô, em lễ phép chào: "Em chào cô ạ!"'},
+  {q:'Đến cổng trường, Nam làm gì trước khi vào lớp?', a:['Chạy thẳng vào lớp','Khoanh tay chào ông','Mua đồ ăn sáng','Đứng đợi bạn'], c:1, e:'Nam khoanh tay chào ông rồi mới chạy vào lớp.'},
+ ]
+},
+{
+ id:'toan4', subject:'toan', icon:'⚖️', title:'Toán – So sánh & Đúng Sai',
+ desc:'Điền dấu >, <, = và câu đúng – sai',
+ questions:[
+  {q:'45 ... 54. Điền dấu gì?', a:['>','<','='], c:1, e:'45 < 54 vì 4 chục bé hơn 5 chục.'},
+  {q:'30 + 6 ... 36. Điền dấu gì?', a:['>','<','='], c:2, e:'30 + 6 = 36 → dấu bằng.'},
+  {q:'89 – 9 ... 70. Điền dấu gì?', a:['>','<','='], c:0, e:'89 – 9 = 80, mà 80 > 70.'},
+  {q:'Đúng hay Sai: 20 + 50 = 70', a:['Đúng ✔','Sai ✘'], c:0, e:'2 chục + 5 chục = 7 chục = 70. Đúng!'},
+  {q:'Đúng hay Sai: Một tuần lễ có 8 ngày', a:['Đúng ✔','Sai ✘'], c:1, e:'Một tuần lễ chỉ có 7 ngày thôi.'},
+  {q:'19 cm + 20 cm ... 40 cm. Điền dấu gì?', a:['>','<','='], c:1, e:'19 + 20 = 39, mà 39 cm < 40 cm.'},
+  {q:'Đúng hay Sai: Số 60 là số tròn chục', a:['Đúng ✔','Sai ✘'], c:0, e:'60 có 0 đơn vị → là số tròn chục.'},
+  {q:'77 – 7 ... 71. Điền dấu gì?', a:['>','<','='], c:1, e:'77 – 7 = 70, mà 70 < 71.'},
+  {q:'Đúng hay Sai: Số liền trước của 100 là 99', a:['Đúng ✔','Sai ✘'], c:0, e:'99 thêm 1 được 100 → 99 là số liền trước.'},
+  {q:'40 + 20 ... 70 – 10. Điền dấu gì?', a:['>','<','='], c:2, e:'40 + 20 = 60 và 70 – 10 = 60 → bằng nhau.'},
+ ]
+},
+{
+ id:'toan5', subject:'toan', icon:'🕐', title:'Toán – Đồng hồ & Đếm hình',
+ desc:'Xem giờ trên đồng hồ, đếm hình vẽ',
+ questions:[
+  {q:'Đồng hồ chỉ mấy giờ?', svg:clockSVG(3), a:['2 giờ','3 giờ','4 giờ','12 giờ'], c:1, e:'Kim ngắn chỉ số 3, kim dài chỉ số 12 → 3 giờ đúng.'},
+  {q:'Đồng hồ chỉ mấy giờ?', svg:clockSVG(7), a:['6 giờ','8 giờ','7 giờ','5 giờ'], c:2, e:'Kim ngắn chỉ số 7 → 7 giờ.'},
+  {q:'Đồng hồ chỉ mấy giờ?', svg:clockSVG(9), a:['9 giờ','10 giờ','3 giờ','12 giờ'], c:0, e:'Kim ngắn chỉ số 9 → 9 giờ.'},
+  {q:'Đồng hồ chỉ mấy giờ?', svg:clockSVG(12), a:['1 giờ','11 giờ','12 giờ','6 giờ'], c:2, e:'Cả hai kim cùng chỉ số 12 → 12 giờ.'},
+  {q:'Hình bên có mấy hình tam giác?', svg:SVG_SQ_DIAG, type:'num', c:'2', e:'Đường chéo chia hình vuông thành 2 hình tam giác.'},
+  {q:'Hình bên có tất cả mấy hình vuông?', svg:SVG_GRID4, type:'num', c:'5', e:'Có 4 hình vuông nhỏ + 1 hình vuông to = 5 hình.'},
+  {q:'Có mấy hình tam giác màu vàng?', svg:SVG_MIX, type:'num', c:'3', e:'Đếm kĩ nhé: có 3 hình tam giác màu vàng.'},
+  {q:'Ngôi nhà được ghép từ hình chữ nhật và hình gì?', svg:SVG_HOUSE, a:['Hình tròn','Hình tam giác','Hình vuông'], c:1, e:'Mái nhà là hình tam giác.'},
+ ]
+},
+{
+ id:'toan6', subject:'toan', icon:'🔀', title:'Toán – Sắp xếp & Nối',
+ desc:'Xếp số theo thứ tự, nối phép tính',
+ questions:[
+  {q:'Chạm vào các số để xếp theo thứ tự TỪ BÉ ĐẾN LỚN:', type:'order', items:['47','8','65','29'], c:['8','29','47','65'], e:'Thứ tự đúng: 8, 29, 47, 65.'},
+  {q:'Xếp các số theo thứ tự TỪ LỚN ĐẾN BÉ:', type:'order', items:['12','90','56','78'], c:['90','78','56','12'], e:'Thứ tự đúng: 90, 78, 56, 12.'},
+  {q:'Nối mỗi phép tính với kết quả đúng:', type:'match', left:['15 + 4','30 + 20','66 – 6'], right:['50','60','19'], pairs:{0:2,1:0,2:1}, e:'15+4=19, 30+20=50, 66–6=60.'},
+  {q:'Xếp các số theo thứ tự TỪ BÉ ĐẾN LỚN:', type:'order', items:['53','35','55','33'], c:['33','35','53','55'], e:'Thứ tự đúng: 33, 35, 53, 55.'},
+  {q:'Nối mỗi phép tính với kết quả đúng:', type:'match', left:['10 + 10','90 – 40','25 + 5'], right:['30','20','50'], pairs:{0:1,1:2,2:0}, e:'10+10=20, 90–40=50, 25+5=30.'},
+ ]
+},
+{
+ id:'tv3', subject:'tv', icon:'✍️', title:'Tiếng Việt – Ghép câu & Nối từ',
+ desc:'Xếp từ thành câu, nối từ đúng nghĩa',
+ questions:[
+  {q:'Chạm vào các từ để ghép thành câu đúng:', type:'order', items:['học bài','Em','chăm chỉ'], c:['Em','chăm chỉ','học bài'], e:'Câu đúng: Em chăm chỉ học bài.'},
+  {q:'Ghép các từ thành câu đúng:', type:'order', items:['yêu','Em','mẹ','rất'], c:['Em','rất','yêu','mẹ'], e:'Câu đúng: Em rất yêu mẹ.'},
+  {q:'Ghép các từ thành câu đúng:', type:'order', items:['em','Bố','gấu bông','tặng'], c:['Bố','tặng','em','gấu bông'], e:'Câu đúng: Bố tặng em gấu bông.'},
+  {q:'Nối để tạo câu đúng:', type:'match', left:['Con mèo','Bông hoa','Ông em'], right:['đang đọc báo','bắt chuột giỏi','nở đỏ thắm'], pairs:{0:1,1:2,2:0}, e:'Con mèo bắt chuột giỏi. Bông hoa nở đỏ thắm. Ông em đang đọc báo.'},
+  {q:'Nối mỗi từ với nhóm đúng của nó:', type:'match', left:['con trâu','cái bàn','hoa sen'], right:['đồ vật','loài hoa','con vật'], pairs:{0:2,1:0,2:1}, e:'Con trâu là con vật, cái bàn là đồ vật, hoa sen là loài hoa.'},
+  {q:'Ghép các từ thành câu đúng:', type:'order', items:['đưa','Nam','Ông','đến trường'], c:['Ông','đưa','Nam','đến trường'], e:'Câu đúng: Ông đưa Nam đến trường.'},
+ ]
+}
+];
+
+/* ================= TRẠNG THÁI & LƯU ĐIỂM ================= */
+const app = document.getElementById('app');
+let best = {}, totalStars = 0;
+
+async function loadSaved(){
+  try{
+    const r = await window.storage.get('betap-progress');
+    if(r && r.value){ const d = JSON.parse(r.value); best = d.best||{}; totalStars = d.stars||0; }
+  }catch(e){ /* chưa có dữ liệu — bắt đầu mới */ }
+}
+async function saveProgress(){
+  try{ await window.storage.set('betap-progress', JSON.stringify({best, stars: totalStars})); }catch(e){}
+}
+
+/* ================= MÀN HÌNH CHÍNH ================= */
+function home(){
+  const cards = QUIZZES.map(qz=>{
+    const b = best[qz.id];
+    return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
+      <div class="icon">${qz.icon}</div>
+      <div><div class="t">${qz.title}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
+      <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${QUIZZES.find(x=>x.id===qz.id).questions.length}</b>`:''}</div>
+    </div>`;
+  }).join('');
+  app.innerHTML = `
+    <div class="hero">
+      <div class="mascot">🦉</div>
+      <h1>Bé Ôn Tập <span class="accent">Hè</span></h1>
+      <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
+      <div class="starbar">⭐ ${totalStars} ngôi sao đã đạt được</div>
+    </div>
+    <div class="subject">${cards}</div>`;
+  window.scrollTo(0,0);
+}
+
+/* ================= LÀM BÀI ================= */
+let cur = null, idx = 0, score = 0, numInput = '';
+
+function startQuiz(id){
+  cur = QUIZZES.find(q=>q.id===id); idx = 0; score = 0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = cur.questions[idx];
+  numInput = '';
+  const pct = Math.round(idx / cur.questions.length * 100);
+  let body = '';
+  if(q.type === 'num'){
+    body = `<div class="numpad">
+      <div class="numshow" id="numshow">?</div>
+      <div class="pads">
+        ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="pad" onclick="tapPad('${n}')">${n}</button>`).join('')}
+        <button class="pad" onclick="tapPad('del')">⌫</button>
+        <button class="pad" onclick="tapPad('0')">0</button>
+        <button class="pad act" onclick="checkNum()">✔ Xong</button>
+      </div>
+    </div>`;
+  } else if(q.type === 'order'){
+    orderPicked = [];
+    body = `<div class="slots" id="slots">${q.items.map(()=>'<div class="slot">·</div>').join('')}</div>
+      <div class="pool" id="pool">${q.items.map((it,i)=>`<button class="pill" id="pill${i}" onclick="tapOrder(${i})">${it}</button>`).join('')}</div>
+      <div class="ctrlrow">
+        <button class="pad" onclick="resetOrder()">↺ Xếp lại</button>
+        <button class="pad act" onclick="checkOrder()">✔ Xong</button>
+      </div>`;
+  } else if(q.type === 'match'){
+    matchSel = -1; matchPairs = {};
+    body = `<div class="matchgrid">
+      <div>${q.left.map((l,i)=>`<button class="mbtn" id="L${i}" onclick="tapLeft(${i})">${l}</button>`).join('')}</div>
+      <div>${q.right.map((r,j)=>`<button class="mbtn" id="R${j}" onclick="tapRight(${j})">${r}</button>`).join('')}</div>
+    </div>
+    <button class="pad act" style="width:100%;margin-top:12px" onclick="checkMatch()">✔ Xong</button>`;
+  } else {
+    const keys = ['A','B','C','D'];
+    body = `<div class="answers">
+      ${q.a.map((opt,i)=>`<button class="ans" id="ans${i}" onclick="checkChoice(${i})"><span class="key">${keys[i]}</span>${opt}</button>`).join('')}
+    </div>`;
+  }
+  app.innerHTML = `
+    <div class="top">
+      <button class="back" onclick="confirmExit()">←</button>
+      <div class="crumb">${cur.icon} ${cur.title}</div>
+    </div>
+    <div class="progress"><div class="fill" style="width:${pct}%"></div></div>
+    <div class="pcount">Câu ${idx+1} / ${cur.questions.length} · ⭐ ${score}</div>
+    ${cur.passage && idx===0 ? `<div class="passage"><div class="pt">📖 ${cur.passage.title}</div>${cur.passage.text}</div>`:''}
+    ${cur.passage && idx>0 ? `<details class="passage" style="border-style:solid"><summary style="font-weight:800;color:#a02730;cursor:pointer">📖 Xem lại bài đọc</summary><div style="margin-top:6px">${cur.passage.text}</div></details>`:''}
+    <div class="qbox">
+      <div class="qtext">${q.q}</div>
+      ${q.svg ? `<div class="qsvgwrap">${q.svg}</div>` : ''}
+      ${body}
+      <div class="feedback" id="fb"></div>
+      <button class="nextbtn" id="next" onclick="nextQ()">Câu tiếp theo →</button>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+function tapPad(v){
+  if(v==='del') numInput = numInput.slice(0,-1);
+  else if(numInput.length < 3) numInput += v;
+  document.getElementById('numshow').textContent = numInput || '?';
+}
+
+function checkNum(){
+  if(!numInput) return;
+  const q = cur.questions[idx];
+  const right = numInput === q.c;
+  finish(right, q);
+  document.getElementById('numshow').style.borderColor = right ? 'var(--green)' : 'var(--red)';
+  document.getElementById('numshow').textContent = numInput + (right ? ' ✔' : ' ✘');
+  document.querySelectorAll('.pad').forEach(b=>b.disabled=true);
+}
+
+/* ---- dạng SẮP XẾP ---- */
+let orderPicked = [];
+function tapOrder(i){
+  const q = cur.questions[idx];
+  if(orderPicked.includes(i) || orderPicked.length >= q.items.length) return;
+  orderPicked.push(i);
+  document.getElementById('pill'+i).classList.add('used');
+  const slots = document.querySelectorAll('#slots .slot');
+  slots[orderPicked.length-1].textContent = q.items[i];
+}
+function resetOrder(){
+  orderPicked = [];
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('used'));
+  document.querySelectorAll('#slots .slot').forEach(s=>{s.textContent='·';s.classList.remove('ok','no')});
+}
+function checkOrder(){
+  const q = cur.questions[idx];
+  if(orderPicked.length < q.items.length) return;
+  const values = orderPicked.map(i=>q.items[i]);
+  const slots = document.querySelectorAll('#slots .slot');
+  let right = true;
+  values.forEach((v,k)=>{
+    const ok = v === q.c[k];
+    slots[k].classList.add(ok?'ok':'no');
+    if(!ok) right = false;
+  });
+  document.querySelectorAll('.pill,.pad').forEach(b=>b.disabled=true);
+  finish(right, q);
+}
+
+/* ---- dạng NỐI ---- */
+let matchSel = -1, matchPairs = {};
+const PAIRCOLORS = ['#FFE3A3','#BFE8D2','#F8C6CE','#C3D8F8'];
+function paintPair(i, j, on){
+  const L = document.getElementById('L'+i), R = document.getElementById('R'+j);
+  const col = on ? PAIRCOLORS[i % PAIRCOLORS.length] : '#fffdf7';
+  L.style.background = col; R.style.background = col;
+  L.style.borderColor = on ? '#b89a4a' : '#cfc6ae';
+  R.style.borderColor = on ? '#b89a4a' : '#cfc6ae';
+}
+function tapLeft(i){
+  if(matchPairs[i] !== undefined){ paintPair(i, matchPairs[i], false); delete matchPairs[i]; }
+  document.querySelectorAll('.matchgrid .mbtn').forEach(b=>b.classList.remove('sel'));
+  matchSel = i;
+  document.getElementById('L'+i).classList.add('sel');
+}
+function tapRight(j){
+  if(matchSel < 0) return;
+  for(const li in matchPairs){ if(matchPairs[li] === j){ paintPair(+li, j, false); delete matchPairs[li]; } }
+  matchPairs[matchSel] = j;
+  paintPair(matchSel, j, true);
+  document.getElementById('L'+matchSel).classList.remove('sel');
+  matchSel = -1;
+}
+function checkMatch(){
+  const q = cur.questions[idx];
+  if(Object.keys(matchPairs).length < q.left.length) return;
+  let right = true;
+  for(let i=0;i<q.left.length;i++){ if(matchPairs[i] !== q.pairs[i]) right = false; }
+  document.querySelectorAll('.mbtn,.pad').forEach(b=>b.disabled=true);
+  finish(right, q);
+}
+
+function checkChoice(i){
+  const q = cur.questions[idx];
+  const right = i === q.c;
+  document.querySelectorAll('.ans').forEach((b,bi)=>{
+    b.disabled = true;
+    if(bi === q.c) b.classList.add('correct');
+    else if(bi === i && !right) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  finish(right, q);
+}
+
+function finish(right, q){
+  const fb = document.getElementById('fb');
+  const praise = ['Giỏi quá! 🎉','Chính xác! 🌟','Tuyệt vời! 👏','Bé làm đúng rồi! 💯'];
+  if(right){
+    score++;
+    fb.className = 'feedback ok';
+    fb.innerHTML = praise[Math.floor(Math.random()*praise.length)] + '<br><span style="font-weight:700;font-size:14px">' + q.e + '</span>';
+    dropConfetti(6);
+  } else {
+    fb.className = 'feedback no';
+    fb.innerHTML = 'Chưa đúng, không sao nhé! 💪<br><span style="font-weight:700;font-size:14px">' + q.e + '</span>';
+  }
+  const nx = document.getElementById('next');
+  nx.classList.add('show');
+  if(idx === cur.questions.length - 1) nx.textContent = 'Xem kết quả 🏁';
+}
+
+function nextQ(){
+  idx++;
+  if(idx < cur.questions.length) renderQuestion();
+  else showResult();
+}
+
+function confirmExit(){
+  if(idx===0 && score===0){ home(); return; }
+  if(confirm('Bé muốn dừng bài này và quay về trang chính?')) home();
+}
+
+/* ================= KẾT QUẢ ================= */
+async function showResult(){
+  const total = cur.questions.length;
+  const prevBest = best[cur.id] ?? -1;
+  if(score > prevBest){ best[cur.id] = score; }
+  totalStars += score;
+  await saveProgress();
+
+  const ratio = score/total;
+  let face='🌱', msg='Cố gắng thêm chút nữa nhé, bé làm lại nào!';
+  if(ratio===1){ face='🏆'; msg='Xuất sắc! Bé đạt điểm tuyệt đối!'; }
+  else if(ratio>=0.8){ face='🌟'; msg='Giỏi lắm! Bé sắp đạt điểm tối đa rồi!'; }
+  else if(ratio>=0.5){ face='😊'; msg='Khá tốt! Ôn thêm một chút là giỏi ngay!'; }
+  const starCount = ratio===1?3:ratio>=0.8?2:ratio>=0.5?1:0;
+  const starsHtml = '⭐'.repeat(starCount) + '<span style="opacity:.25">' + '⭐'.repeat(3-starCount) + '</span>';
+
+  app.innerHTML = `
+    <div class="result">
+      <div class="big">${face}</div>
+      <h2>Hoàn thành ${cur.title}!</h2>
+      <div class="scorecard">
+        <div class="num">${score}<small>/${total}</small></div>
+        <div class="stars">${starsHtml}</div>
+        <div class="msg">${msg}</div>
+        ${score > prevBest && prevBest >= 0 ? '<div class="msg" style="color:var(--green)">🎉 Kỷ lục mới!</div>':''}
+      </div>
+      <div class="rbtns">
+        <button class="rbtn primary" onclick="startQuiz('${cur.id}')">🔁 Làm lại đề này</button>
+        <button class="rbtn" onclick="home()">🏠 Về trang chính</button>
+      </div>
+    </div>`;
+  if(ratio>=0.8) dropConfetti(26);
+  window.scrollTo(0,0);
+}
+
+/* ================= HIỆU ỨNG ================= */
+function dropConfetti(n){
+  const em = ['🎉','⭐','🌟','🎈','✨'];
+  for(let i=0;i<n;i++){
+    const s = document.createElement('div');
+    s.className='confetti';
+    s.textContent = em[Math.floor(Math.random()*em.length)];
+    s.style.left = Math.random()*100+'vw';
+    s.style.animationDuration = (1.4+Math.random()*1.4)+'s';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 3200);
+  }
+}
+
+/* ================= KHỞI ĐỘNG ================= */
+loadSaved().then(home);
+</script>
+</body>
+</html>
