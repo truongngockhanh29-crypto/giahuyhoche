@@ -82,6 +82,13 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .card .best{margin-left:auto;flex:none;text-align:center;font-size:12px;font-weight:800;color:#a8760a}
 .card .best b{display:block;font-size:18px;font-family:'Baloo 2',cursive}
 
+/* ---- nhãn NÂNG CAO ---- */
+.card.adv{border-color:#d99a00;box-shadow:0 4px 0 #d99a00;background:#fffdf5}
+.card.adv:active{box-shadow:0 1px 0 #d99a00}
+.advbadge{display:inline-block;vertical-align:middle;margin-left:8px;font-family:'Nunito',sans-serif;
+  font-weight:800;font-size:10.5px;letter-spacing:.5px;color:#6b4b00;background:var(--star);
+  border:1.5px solid #d99a00;border-radius:999px;padding:2px 8px;white-space:nowrap;line-height:1.5}
+
 /* ---- quiz ---- */
 .progress{height:14px;background:#fff;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin-bottom:6px}
 .progress .fill{height:100%;background:linear-gradient(90deg,var(--star),#ffb020);width:0%;transition:width .35s;border-radius:999px}
@@ -615,12 +622,15 @@ async function resetProgress(){
 /* ================= MÀN HÌNH CHÍNH ================= */
 const SUBJECT_META = { toan:{name:'Toán', emoji:'🔢'}, tv:{name:'Tiếng Việt', emoji:'📖'} };
 
+function isAdvanced(qz){ return qz.adv === true || /nâng cao/i.test(qz.title); }
+
 function quizCard(qz){
   const b = best[qz.id];
   const shortTitle = qz.title.replace(/^[^–]*–\s*/, ''); // bỏ tiền tố "Môn – " vì đã có tiêu đề môn
-  return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
+  const badge = isAdvanced(qz) ? '<span class="advbadge">⭐ NÂNG CAO</span>' : '';
+  return `<div class="card ${qz.subject==='tv'?'tv':''} ${isAdvanced(qz)?'adv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
-      <div><div class="t">${shortTitle}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
+      <div><div class="t">${shortTitle}${badge}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
       <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${qz.questions.length}</b>`:''}</div>
     </div>`;
 }
