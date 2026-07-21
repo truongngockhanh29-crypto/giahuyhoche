@@ -508,6 +508,39 @@ const QUIZZES = [
   {q:'Câu nào viết hoa đúng?', a:['bạn nam học giỏi.','Bạn Nam học giỏi.','bạn Nam học giỏi.','Bạn nam học Giỏi.'], c:1, e:'Viết hoa chữ đầu câu và tên riêng (Nam).'},
   {q:'Từ trái nghĩa với "chăm chỉ" là:', a:['siêng năng','lười biếng','ngoan ngoãn','vui vẻ'], c:1, e:'Chăm chỉ trái nghĩa với lười biếng.'},
  ]
+},
+{
+ id:'toan11', subject:'toan', icon:'🎯', title:'Toán – Nâng cao 2',
+ desc:'Logic, tính nhiều bước, số & thời gian',
+ questions:[
+  {q:'Điền số vào ô trống: ▢ – 25 = 30', type:'num', c:'55', e:'30 + 25 = 55.'},
+  {q:'Lan có 8 cái kẹo, Hoa có nhiều hơn Lan 6 cái. Cả hai bạn có bao nhiêu cái kẹo?', type:'num', c:'22', e:'Hoa có 8 + 6 = 14; cả hai: 8 + 14 = 22 (cái).'},
+  {q:'Một tuần có 7 ngày. Hỏi 2 tuần có bao nhiêu ngày?', type:'num', c:'14', e:'7 + 7 = 14 (ngày).'},
+  {q:'Số liền sau của số lớn nhất có hai chữ số là số nào?', type:'num', c:'100', e:'Lớn nhất có hai chữ số là 99; liền sau là 100.'},
+  {q:'Bây giờ là 8 giờ. Sau 2 giờ nữa là mấy giờ?', type:'num', c:'10', e:'8 + 2 = 10 (giờ).'},
+  {q:'Có 5 con chim đậu trên cành, 2 con bay đi rồi 3 con bay đến. Trên cành có mấy con chim?', type:'num', c:'6', e:'5 – 2 = 3, rồi 3 + 3 = 6 (con).'},
+  {q:'Mẹ mua 3 gói bánh, mỗi gói 5 cái. Mẹ mua tất cả bao nhiêu cái bánh?', type:'num', c:'15', e:'5 + 5 + 5 = 15 (cái) — 3 lần 5.'},
+  {q:'Số nào lớn hơn 48 và bé hơn 50?', type:'num', c:'49', e:'Giữa 48 và 50 là 49.'},
+  {q:'Nối phép tính với kết quả đúng:', type:'match', left:['24 + 24','100 – 30','15 + 15'], right:['30','48','70'], pairs:{0:1,1:2,2:0}, e:'24+24=48, 100–30=70, 15+15=30.'},
+  {q:'Xếp các số theo thứ tự TỪ LỚN ĐẾN BÉ:', type:'order', items:['100','99','9','90'], c:['100','99','90','9'], e:'Thứ tự đúng: 100, 99, 90, 9.'},
+ ]
+},
+{
+ id:'tv9', subject:'tv', icon:'📗', title:'Tiếng Việt – Nâng cao 2',
+ desc:'Đọc hiểu suy luận, thành ngữ, đặt câu',
+ passage:{title:'Cây táo của ông', text:'Ông trồng một cây táo trước sân. Ngày ngày, ông tưới nước, bắt sâu cho cây. Mấy năm sau, cây táo lớn lên, cho những quả táo chín đỏ, ngọt lịm. Cả nhà ai cũng được ăn táo ngon. Nam hiểu rằng nhờ ông chăm chỉ vun trồng nên mới có quả ngọt hôm nay.'},
+ questions:[
+  {q:'Ông đã làm gì để chăm cây táo?', a:['Tưới nước, bắt sâu','Chặt bớt cành','Để cây tự lớn','Nhổ cây đi'], c:0, e:'Ngày ngày ông tưới nước, bắt sâu cho cây.'},
+  {q:'Quả táo trong bài có vị thế nào?', a:['Chua loét','Ngọt lịm','Đắng','Nhạt nhẽo'], c:1, e:'Táo chín đỏ, ngọt lịm.'},
+  {q:'Vì sao cây táo cho quả ngọt?', a:['Nhờ ông chăm chỉ vun trồng','Nhờ trời mưa nhiều','Do may mắn','Tự nhiên mà có'], c:0, e:'Nhờ ông chăm chỉ vun trồng nên mới có quả ngọt.'},
+  {q:'Bài đọc khuyên em điều gì?', a:['Chăm chỉ thì sẽ có thành quả tốt','Nên đi mua táo','Không cần tưới cây','Táo có màu đỏ'], c:0, e:'Có công chăm sóc thì được hưởng quả ngọt.'},
+  {q:'Thành ngữ nào hợp với bài đọc?', a:['Có công mài sắt, có ngày nên kim','Gần mực thì đen','Chậm như rùa','Nước đổ lá khoai'], c:0, e:'Kiên trì chăm chỉ sẽ có kết quả tốt.'},
+  {q:'Từ "ngọt lịm" có nghĩa là gì?', a:['Rất ngọt','Hơi chua','Rất cứng','Có màu đỏ'], c:0, e:'"ngọt lịm" nghĩa là rất ngọt.'},
+  {q:'Sắp xếp các từ thành câu đúng:', type:'order', items:['táo','Ông','cây','trồng'], c:['Ông','trồng','cây','táo'], e:'Câu đúng: Ông trồng cây táo.'},
+  {q:'Nối từ với nghĩa đúng:', type:'match', left:['chăm chỉ','vun trồng','thu hoạch'], right:['hái quả, lấy thành quả','siêng năng làm việc','trồng và chăm bón'], pairs:{0:1,1:2,2:0}, e:'chăm chỉ = siêng năng; vun trồng = trồng và chăm bón; thu hoạch = hái quả.'},
+  {q:'Câu nào dùng dấu phẩy đúng?', a:['Ông tưới nước bắt sâu cho cây.','Ông tưới nước, bắt sâu cho cây.','Ông, tưới nước bắt sâu cho cây.','Ông tưới, nước bắt sâu cho cây.'], c:1, e:'Dấu phẩy ngăn cách hai việc: "tưới nước, bắt sâu".'},
+  {q:'Từ trái nghĩa với "ngọt" là:', a:['bùi','đắng','thơm','mềm'], c:1, e:'Ngọt trái nghĩa với đắng.'},
+ ]
 }
 ];
 
