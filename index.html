@@ -476,6 +476,38 @@ const QUIZZES = [
   {q:'"Chú gà trống gáy vang cả xóm ▢" — điền dấu gì?', a:['Dấu chấm (.)','Dấu chấm hỏi (?)'], c:0, e:'Đây là câu kể → dấu chấm.'},
   {q:'Tình cảm của bạn nhỏ với chú gà thế nào?', a:['Rất yêu quý','Sợ hãi','Ghét bỏ','Không thích'], c:0, e:'"Em rất yêu chú gà trống nhà em."'},
  ]
+},
+{
+ id:'toan10', subject:'toan', icon:'🏆', title:'Toán – Nâng cao',
+ desc:'Tính nhiều bước, tìm số chưa biết, đố mẹo',
+ questions:[
+  {q:'An có 20 viên bi. An cho Bình 5 viên, rồi mẹ cho An thêm 8 viên. An có bao nhiêu viên bi?', type:'num', c:'23', e:'20 – 5 = 15, rồi 15 + 8 = 23 (viên bi).'},
+  {q:'Số nào cộng với 15 thì được 40?', type:'num', c:'25', e:'40 – 15 = 25.'},
+  {q:'Điền số vào ô trống: 30 + ▢ = 72', type:'num', c:'42', e:'72 – 30 = 42.'},
+  {q:'Nhà Lan có 3 chuồng gà, mỗi chuồng 10 con. Nhà Lan có tất cả bao nhiêu con gà?', type:'num', c:'30', e:'10 + 10 + 10 = 30 (con) — 3 lần 10.'},
+  {q:'Hôm nay là thứ Ba. Hỏi 3 ngày nữa là thứ mấy?', a:['Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ nhật'], c:1, e:'Đếm tiếp: Tư, Năm, Sáu → thứ Sáu.'},
+  {q:'Mai hơn Nam 4 tuổi. Nam 7 tuổi. Mai bao nhiêu tuổi?', type:'num', c:'11', e:'7 + 4 = 11 (tuổi).'},
+  {q:'Có bao nhiêu số có hai chữ số mà chữ số hàng chục là 5? (50, 51, … , 59)', type:'num', c:'10', e:'Từ 50 đến 59 có 10 số.'},
+  {q:'Một sợi dây dài 90 cm, cắt thành 3 đoạn bằng nhau. Mỗi đoạn dài bao nhiêu cm?', type:'num', c:'30', e:'90 chia đều 3 đoạn: mỗi đoạn 30 cm.'},
+  {q:'Tổng của hai số là 18, một số là 10. Số kia là bao nhiêu?', type:'num', c:'8', e:'18 – 10 = 8.'},
+  {q:'Xếp các số theo thứ tự TỪ BÉ ĐẾN LỚN:', type:'order', items:['19','91','9','90'], c:['9','19','90','91'], e:'Thứ tự đúng: 9, 19, 90, 91.'},
+ ]
+},
+{
+ id:'tv8', subject:'tv', icon:'🎓', title:'Tiếng Việt – Nâng cao',
+ desc:'Suy luận, mở rộng vốn từ, tục ngữ',
+ questions:[
+  {q:'Câu nào là câu hỏi?', a:['Em đi học.','Bạn tên là gì?','Trời mưa to.','Hoa nở đẹp.'], c:1, e:'Câu hỏi điều chưa biết và có dấu chấm hỏi → "Bạn tên là gì?".'},
+  {q:'Từ nào KHÔNG cùng nhóm với các từ còn lại?', a:['bàn','ghế','tủ','chạy'], c:3, e:'bàn, ghế, tủ là đồ vật; "chạy" là hoạt động.'},
+  {q:'"Chăm chỉ" có nghĩa gần với từ nào?', a:['lười biếng','siêng năng','vui vẻ','buồn bã'], c:1, e:'Chăm chỉ = siêng năng.'},
+  {q:'Chọn từ điền đúng: "Trăng rằm tròn như cái ▢."', a:['đĩa','que','dây','hộp'], c:0, e:'Trăng tròn thường được ví như cái đĩa.'},
+  {q:'Câu "Ăn quả nhớ kẻ trồng cây" khuyên ta điều gì?', a:['Nhớ ơn người đã giúp mình','Trồng thật nhiều cây','Ăn nhiều quả','Chăm làm vườn'], c:0, e:'Khuyên phải biết ơn người đã tạo ra thành quả cho mình.'},
+  {q:'Từ "Tổ quốc" nói về điều gì?', a:['Ngôi nhà','Đất nước mình','Lớp học','Khu vườn'], c:1, e:'Tổ quốc là đất nước, quê hương của mình.'},
+  {q:'Sắp xếp các từ thành câu đúng:', type:'order', items:['chăm','Bé','ngoan','và'], c:['Bé','ngoan','và','chăm'], e:'Câu đúng: Bé ngoan và chăm.'},
+  {q:'Nối nghề nghiệp với công việc đúng:', type:'match', left:['giáo viên','bác sĩ','nông dân'], right:['chữa bệnh','dạy học','trồng lúa'], pairs:{0:1,1:0,2:2}, e:'giáo viên dạy học, bác sĩ chữa bệnh, nông dân trồng lúa.'},
+  {q:'Câu nào viết hoa đúng?', a:['bạn nam học giỏi.','Bạn Nam học giỏi.','bạn Nam học giỏi.','Bạn nam học Giỏi.'], c:1, e:'Viết hoa chữ đầu câu và tên riêng (Nam).'},
+  {q:'Từ trái nghĩa với "chăm chỉ" là:', a:['siêng năng','lười biếng','ngoan ngoãn','vui vẻ'], c:1, e:'Chăm chỉ trái nghĩa với lười biếng.'},
+ ]
 }
 ];
 
