@@ -51,6 +51,18 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
   border-radius:999px;padding:6px 16px;font-weight:800;color:#a8760a;font-size:15px;align-items:center}
 
 .subject{display:grid;gap:14px;margin-top:18px}
+
+/* ---- nhóm theo môn ---- */
+.subjgroup{margin-top:24px}
+.subjgroup .subject{margin-top:0}
+.grouphead{display:flex;align-items:center;gap:9px;margin:0 2px 12px;padding-bottom:8px;
+  border-bottom:2.5px dashed var(--ink)}
+.grouphead .gh-emoji{font-size:24px;line-height:1}
+.grouphead .gh-name{font-family:'Baloo 2',cursive;font-size:22px;color:var(--ink-dark)}
+.grouphead .gh-count{margin-left:auto;font-weight:800;font-size:12.5px;color:#8a8272;
+  background:#fff;border:2px solid var(--line);border-radius:999px;padding:3px 11px}
+.subjgroup.tv .grouphead{border-color:var(--red)}
+.subjgroup.tv .grouphead .gh-name{color:#a02730}
 .card{
   background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:16px 18px;
   box-shadow:0 4px 0 var(--ink);cursor:pointer;display:flex;gap:14px;align-items:center;
@@ -439,14 +451,33 @@ async function resetProgress(){
 }
 
 /* ================= MÀN HÌNH CHÍNH ================= */
-function home(){
-  const cards = QUIZZES.map(qz=>{
-    const b = best[qz.id];
-    return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
+const SUBJECT_META = { toan:{name:'Toán', emoji:'🔢'}, tv:{name:'Tiếng Việt', emoji:'📖'} };
+
+function quizCard(qz){
+  const b = best[qz.id];
+  const shortTitle = qz.title.replace(/^[^–]*–\s*/, ''); // bỏ tiền tố "Môn – " vì đã có tiêu đề nhóm
+  return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
-      <div><div class="t">${qz.title}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
+      <div><div class="t">${shortTitle}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
       <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${qz.questions.length}</b>`:''}</div>
     </div>`;
+}
+
+function home(){
+  // Gom đề theo môn, giữ thứ tự môn xuất hiện lần đầu trong dữ liệu
+  const order = [];
+  QUIZZES.forEach(q=>{ if(!order.includes(q.subject)) order.push(q.subject); });
+  const groups = order.map(sub=>{
+    const items = QUIZZES.filter(q=>q.subject===sub);
+    const m = SUBJECT_META[sub] || {name:sub, emoji:'📚'};
+    return `<section class="subjgroup ${sub==='tv'?'tv':''}">
+      <div class="grouphead">
+        <span class="gh-emoji">${m.emoji}</span>
+        <span class="gh-name">${m.name}</span>
+        <span class="gh-count">${items.length} đề</span>
+      </div>
+      <div class="subject">${items.map(quizCard).join('')}</div>
+    </section>`;
   }).join('');
   app.innerHTML = `
     <div class="hero">
@@ -455,7 +486,7 @@ function home(){
       <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
       <div class="starbar">⭐ ${totalStars} ngôi sao đã đạt được</div>
     </div>
-    <div class="subject">${cards}</div>
+    ${groups}
     <div class="hometools">
       <button class="tool" id="soundBtn" onclick="toggleSound()">${soundOn ? '🔊 Âm thanh: Bật' : '🔇 Âm thanh: Tắt'}</button>
       <button class="tool danger" onclick="resetProgress()">🗑️ Xoá tiến độ</button>
