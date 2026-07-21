@@ -383,6 +383,99 @@ const QUIZZES = [
   {q:'Chọn từ viết đúng (dấu hỏi / dấu ngã):', a:['cái mũ','cái mủ'], c:0, e:'Mũ đội đầu viết dấu ngã → cái mũ.'},
   {q:'Nối mỗi tiếng với chữ đầu viết đúng:', type:'match', left:['con …à','cái …ế','…on cò'], right:['gh (ghế)','g (gà)','c (con)'], pairs:{0:1,1:0,2:2}, e:'con gà (g), cái ghế (gh), con cò (c).'},
  ]
+},
+{
+ id:'toan7', subject:'toan', icon:'⚡', title:'Toán – Tính nhẩm nhanh',
+ desc:'Cộng, trừ nhẩm trong phạm vi 100',
+ questions:[
+  {q:'50 + 30 = ?', type:'num', c:'80', e:'5 chục + 3 chục = 8 chục = 80.'},
+  {q:'72 – 40 = ?', type:'num', c:'32', e:'72 – 40 = 32.'},
+  {q:'25 + 4 = ?', type:'num', c:'29', e:'25 + 4 = 29.'},
+  {q:'68 – 5 = ?', type:'num', c:'63', e:'68 – 5 = 63.'},
+  {q:'40 + 60 = ?', type:'num', c:'100', e:'4 chục + 6 chục = 10 chục = 100.'},
+  {q:'99 – 9 = ?', type:'num', c:'90', e:'99 – 9 = 90.'},
+  {q:'33 + 33 = ?', type:'num', c:'66', e:'3+3=6 (đơn vị), 3+3=6 (chục) → 66.'},
+  {q:'55 – 22 = ?', type:'num', c:'33', e:'5–2=3, 5–2=3 → 33.'},
+  {q:'70 + 25 = ?', type:'num', c:'95', e:'70 + 25 = 95.'},
+  {q:'86 – 50 = ?', type:'num', c:'36', e:'86 – 50 = 36.'},
+ ]
+},
+{
+ id:'toan8', subject:'toan', icon:'🧮', title:'Toán – Bài toán có lời văn',
+ desc:'Giải toán đố nhiều tình huống',
+ questions:[
+  {q:'Lan có 15 cái kẹo, mẹ cho thêm 12 cái. Lan có tất cả bao nhiêu cái kẹo?', type:'num', c:'27', e:'15 + 12 = 27 (cái kẹo).'},
+  {q:'Trong vườn có 30 cây, người ta chặt đi 10 cây. Vườn còn lại bao nhiêu cây?', type:'num', c:'20', e:'30 – 10 = 20 (cây).'},
+  {q:'Hà gấp được 24 con hạc, Mai gấp được 13 con. Cả hai gấp được bao nhiêu con hạc?', type:'num', c:'37', e:'24 + 13 = 37 (con hạc).'},
+  {q:'Có 45 quả trứng, đã bán 21 quả. Còn lại bao nhiêu quả trứng?', type:'num', c:'24', e:'45 – 21 = 24 (quả).'},
+  {q:'Lớp 1A có 18 bạn nam và 16 bạn nữ. Lớp có tất cả bao nhiêu bạn?', type:'num', c:'34', e:'18 + 16 = 34 (bạn).'},
+  {q:'Bao gạo nặng 50 kg, đã dùng hết 20 kg. Bao gạo còn lại bao nhiêu ki-lô-gam?', type:'num', c:'30', e:'50 – 20 = 30 (kg).'},
+  {q:'An đọc 12 trang buổi sáng, 15 trang buổi chiều. An đọc được bao nhiêu trang?', type:'num', c:'27', e:'12 + 15 = 27 (trang).'},
+  {q:'Sân có 28 con gà, thêm 6 con nữa. Sân có bao nhiêu con gà?', type:'num', c:'34', e:'28 + 6 = 34 (con gà).'},
+  {q:'Bé có 9 chục viên bi và 5 viên bi lẻ. Bé có bao nhiêu viên bi?', type:'num', c:'95', e:'9 chục 5 đơn vị = 95 (viên bi).'},
+  {q:'Cửa hàng có 40 chiếc bánh, buổi sáng bán 25 chiếc. Còn lại bao nhiêu chiếc bánh?', type:'num', c:'15', e:'40 – 25 = 15 (chiếc bánh).'},
+ ]
+},
+{
+ id:'toan9', subject:'toan', icon:'🪜', title:'Toán – Điền số & Dãy số',
+ desc:'Tìm số còn thiếu, quy luật, cách đọc số',
+ questions:[
+  {q:'Dãy số: 2 ; 4 ; 6 ; 8 ; ? . Số tiếp theo là:', type:'num', c:'10', e:'Đếm thêm 2: 8 + 2 = 10.'},
+  {q:'Dãy số: 30 ; 40 ; 50 ; ? . Số tiếp theo là:', type:'num', c:'60', e:'Đếm thêm 10: 50 + 10 = 60.'},
+  {q:'Số còn thiếu: 45 ; 46 ; ? ; 48', type:'num', c:'47', e:'Đếm thêm 1: sau 46 là 47.'},
+  {q:'Dãy số: 20 ; 18 ; 16 ; ? . Số tiếp theo là:', type:'num', c:'14', e:'Đếm lùi 2: 16 – 2 = 14.'},
+  {q:'Số liền trước của 70 là số nào?', type:'num', c:'69', e:'70 – 1 = 69.'},
+  {q:'Xếp các số theo thứ tự TỪ BÉ ĐẾN LỚN:', type:'order', items:['81','18','80','8'], c:['8','18','80','81'], e:'Thứ tự đúng: 8, 18, 80, 81.'},
+  {q:'Xếp các số theo thứ tự TỪ LỚN ĐẾN BÉ:', type:'order', items:['64','46','60','40'], c:['64','60','46','40'], e:'Thứ tự đúng: 64, 60, 46, 40.'},
+  {q:'Nối số với cách đọc đúng:', type:'match', left:['15','50','19'], right:['mười chín','mười lăm','năm mươi'], pairs:{0:1,1:2,2:0}, e:'15 = mười lăm, 50 = năm mươi, 19 = mười chín.'},
+  {q:'Số gồm 7 chục và 3 đơn vị là số nào?', type:'num', c:'73', e:'7 chục 3 đơn vị = 73.'},
+  {q:'Số lớn nhất có hai chữ số là số nào?', type:'num', c:'99', e:'Số lớn nhất có hai chữ số là 99.'},
+ ]
+},
+{
+ id:'tv5', subject:'tv', icon:'🎵', title:'Tiếng Việt – Dấu thanh',
+ desc:'Nhận biết hỏi, ngã, sắc, huyền, nặng',
+ questions:[
+  {q:'Tiếng "mẹ" mang dấu thanh gì?', a:['Dấu sắc','Dấu nặng','Dấu huyền','Dấu hỏi'], c:1, e:'"mẹ" có dấu chấm dưới → dấu nặng.'},
+  {q:'Tiếng "bà" mang dấu thanh gì?', a:['Dấu huyền','Dấu sắc','Dấu ngã','Dấu nặng'], c:0, e:'"bà" có dấu huyền (nét xiên trái).'},
+  {q:'Tiếng "cá" mang dấu thanh gì?', a:['Dấu huyền','Dấu sắc','Dấu hỏi','Dấu ngã'], c:1, e:'"cá" có dấu sắc (nét xiên phải).'},
+  {q:'Tiếng "ngã" mang dấu thanh gì?', a:['Dấu hỏi','Dấu ngã','Dấu sắc','Dấu nặng'], c:1, e:'"ngã" có dấu ngã (dấu lượn sóng).'},
+  {q:'Tiếng "quả" mang dấu thanh gì?', a:['Dấu hỏi','Dấu ngã','Dấu nặng','Dấu sắc'], c:0, e:'"quả" có dấu hỏi (dấu móc).'},
+  {q:'Chọn tiếng viết đúng chính tả:', a:['cái tủ','cái tũ'], c:0, e:'Cái tủ đựng đồ viết dấu hỏi → "tủ".'},
+  {q:'Chọn tiếng viết đúng chính tả:', a:['suy nghỉ','suy nghĩ'], c:1, e:'Suy nghĩ (dùng đầu óc) viết dấu ngã → "nghĩ".'},
+  {q:'Nối tiếng với dấu thanh đúng:', type:'match', left:['võng','phở','bút'], right:['dấu sắc','dấu ngã','dấu hỏi'], pairs:{0:1,1:2,2:0}, e:'võng (ngã), phở (hỏi), bút (sắc).'},
+ ]
+},
+{
+ id:'tv6', subject:'tv', icon:'🧩', title:'Tiếng Việt – Luyện từ',
+ desc:'Từ chỉ sự vật – hoạt động – đặc điểm, trái nghĩa',
+ questions:[
+  {q:'Từ nào chỉ hoạt động?', a:['bông hoa','chạy','màu đỏ','cái ghế'], c:1, e:'"chạy" chỉ hoạt động.'},
+  {q:'Từ nào chỉ sự vật?', a:['hát','quyển sách','nhanh','xanh'], c:1, e:'"quyển sách" chỉ sự vật (đồ vật).'},
+  {q:'Từ nào chỉ đặc điểm (màu sắc)?', a:['bơi','vàng','con cá','ăn'], c:1, e:'"vàng" chỉ đặc điểm màu sắc.'},
+  {q:'Từ trái nghĩa với "cao" là:', a:['lớn','thấp','to','dài'], c:1, e:'Cao trái nghĩa với thấp.'},
+  {q:'Từ trái nghĩa với "nóng" là:', a:['ấm','lạnh','mát','sôi'], c:1, e:'Nóng trái nghĩa với lạnh.'},
+  {q:'Từ trái nghĩa với "nhanh" là:', a:['chậm','vội','gấp','mau'], c:0, e:'Nhanh trái nghĩa với chậm.'},
+  {q:'Nối từ với nhóm đúng:', type:'match', left:['con mèo','nhảy','tròn'], right:['đặc điểm','con vật','hoạt động'], pairs:{0:1,1:2,2:0}, e:'con mèo (con vật), nhảy (hoạt động), tròn (đặc điểm).'},
+  {q:'Nối mỗi từ với từ trái nghĩa:', type:'match', left:['vui','ngày','no'], right:['đói','buồn','đêm'], pairs:{0:1,1:2,2:0}, e:'vui ↔ buồn, ngày ↔ đêm, no ↔ đói.'},
+  {q:'Ghép các từ thành câu đúng:', type:'order', items:['hoa','Vườn','nhiều','có'], c:['Vườn','có','nhiều','hoa'], e:'Câu đúng: Vườn có nhiều hoa.'},
+  {q:'Từ nào chỉ người trong gia đình?', a:['bàn ghế','ông bà','cây cối','xe đạp'], c:1, e:'"ông bà" chỉ người trong gia đình.'},
+ ]
+},
+{
+ id:'tv7', subject:'tv', icon:'🐔', title:'Tiếng Việt – Đọc hiểu: Chú gà trống',
+ desc:'Đọc hiểu: Chú gà trống',
+ passage:{title:'Chú gà trống', text:'Nhà em nuôi một chú gà trống. Chú có bộ lông nhiều màu rực rỡ, chiếc mào đỏ tươi như bông hoa. Mỗi sáng sớm, chú vỗ cánh phành phạch rồi cất tiếng gáy "Ò ó o" vang cả xóm. Tiếng gáy của chú gọi mọi người thức dậy đi làm, đi học. Em rất yêu chú gà trống nhà em.'},
+ questions:[
+  {q:'Nhà bạn nhỏ nuôi con vật gì?', a:['Con mèo','Chú gà trống','Con chó','Con vịt'], c:1, e:'"Nhà em nuôi một chú gà trống."'},
+  {q:'Chiếc mào của chú gà được so sánh với gì?', a:['Bông hoa','Ngọn lửa','Mặt trời','Quả cà chua'], c:0, e:'Chiếc mào đỏ tươi như bông hoa.'},
+  {q:'Mỗi sáng sớm chú gà làm gì?', a:['Đi kiếm ăn','Cất tiếng gáy','Ngủ tiếp','Bơi lội'], c:1, e:'Mỗi sáng chú cất tiếng gáy "Ò ó o".'},
+  {q:'Tiếng gáy của chú gà để làm gì?', a:['Gọi mọi người thức dậy','Gọi bạn đến chơi','Dọa mèo','Đòi ăn'], c:0, e:'Tiếng gáy gọi mọi người thức dậy đi làm, đi học.'},
+  {q:'Trong bài, tiếng gà gáy được viết là gì?', a:['Meo meo','Ò ó o','Gâu gâu','Quạc quạc'], c:1, e:'Trong bài, gà gáy "Ò ó o".'},
+  {q:'Từ nào tả bộ lông của chú gà?', a:['rực rỡ','phành phạch','thức dậy','buổi sáng'], c:0, e:'"rực rỡ" tả bộ lông nhiều màu.'},
+  {q:'"Chú gà trống gáy vang cả xóm ▢" — điền dấu gì?', a:['Dấu chấm (.)','Dấu chấm hỏi (?)'], c:0, e:'Đây là câu kể → dấu chấm.'},
+  {q:'Tình cảm của bạn nhỏ với chú gà thế nào?', a:['Rất yêu quý','Sợ hãi','Ghét bỏ','Không thích'], c:0, e:'"Em rất yêu chú gà trống nhà em."'},
+ ]
 }
 ];
 
