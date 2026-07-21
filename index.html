@@ -52,17 +52,19 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 
 .subject{display:grid;gap:14px;margin-top:18px}
 
-/* ---- nhóm theo môn ---- */
-.subjgroup{margin-top:24px}
-.subjgroup .subject{margin-top:0}
-.grouphead{display:flex;align-items:center;gap:9px;margin:0 2px 12px;padding-bottom:8px;
-  border-bottom:2.5px dashed var(--ink)}
-.grouphead .gh-emoji{font-size:24px;line-height:1}
-.grouphead .gh-name{font-family:'Baloo 2',cursive;font-size:22px;color:var(--ink-dark)}
-.grouphead .gh-count{margin-left:auto;font-weight:800;font-size:12.5px;color:#8a8272;
-  background:#fff;border:2px solid var(--line);border-radius:999px;padding:3px 11px}
-.subjgroup.tv .grouphead{border-color:var(--red)}
-.subjgroup.tv .grouphead .gh-name{color:#a02730}
+/* ---- chọn môn (màn hình chính) ---- */
+.subjectpick{display:grid;gap:16px;margin-top:22px}
+.subjcard{background:#fff;border:2.5px solid var(--ink);border-radius:20px;padding:20px 18px;
+  box-shadow:0 5px 0 var(--ink);cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform .08s}
+.subjcard:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.subjcard .sc-emoji{font-size:46px;line-height:1;flex:none}
+.subjcard .sc-name{font-family:'Baloo 2',cursive;font-size:26px;color:var(--ink-dark);line-height:1.1}
+.subjcard .sc-meta{font-size:14px;color:#8a8272;font-weight:700;margin-top:4px}
+.subjcard .sc-arrow{margin-left:auto;flex:none;font-family:'Baloo 2',cursive;font-size:36px;color:var(--ink);line-height:1}
+.subjcard.tv{border-color:var(--red);box-shadow:0 5px 0 var(--red)}
+.subjcard.tv:active{box-shadow:0 1px 0 var(--red)}
+.subjcard.tv .sc-name{color:#a02730}
+.subjcard.tv .sc-arrow{color:var(--red)}
 .card{
   background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:16px 18px;
   box-shadow:0 4px 0 var(--ink);cursor:pointer;display:flex;gap:14px;align-items:center;
@@ -455,7 +457,7 @@ const SUBJECT_META = { toan:{name:'Toán', emoji:'🔢'}, tv:{name:'Tiếng Vi�
 
 function quizCard(qz){
   const b = best[qz.id];
-  const shortTitle = qz.title.replace(/^[^–]*–\s*/, ''); // bỏ tiền tố "Môn – " vì đã có tiêu đề nhóm
+  const shortTitle = qz.title.replace(/^[^–]*–\s*/, ''); // bỏ tiền tố "Môn – " vì đã có tiêu đề môn
   return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
       <div><div class="t">${shortTitle}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
@@ -463,21 +465,22 @@ function quizCard(qz){
     </div>`;
 }
 
+/* Màn hình chính: chỉ chọn MÔN */
 function home(){
-  // Gom đề theo môn, giữ thứ tự môn xuất hiện lần đầu trong dữ liệu
   const order = [];
   QUIZZES.forEach(q=>{ if(!order.includes(q.subject)) order.push(q.subject); });
-  const groups = order.map(sub=>{
+  const cards = order.map(sub=>{
     const items = QUIZZES.filter(q=>q.subject===sub);
     const m = SUBJECT_META[sub] || {name:sub, emoji:'📚'};
-    return `<section class="subjgroup ${sub==='tv'?'tv':''}">
-      <div class="grouphead">
-        <span class="gh-emoji">${m.emoji}</span>
-        <span class="gh-name">${m.name}</span>
-        <span class="gh-count">${items.length} đề</span>
+    const done = items.filter(q=>best[q.id]!=null).length;
+    return `<div class="subjcard ${sub==='tv'?'tv':''}" onclick="openSubject('${sub}')">
+      <div class="sc-emoji">${m.emoji}</div>
+      <div class="sc-body">
+        <div class="sc-name">${m.name}</div>
+        <div class="sc-meta">${items.length} đề · đã làm ${done}/${items.length}</div>
       </div>
-      <div class="subject">${items.map(quizCard).join('')}</div>
-    </section>`;
+      <div class="sc-arrow">›</div>
+    </div>`;
   }).join('');
   app.innerHTML = `
     <div class="hero">
@@ -486,11 +489,24 @@ function home(){
       <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
       <div class="starbar">⭐ ${totalStars} ngôi sao đã đạt được</div>
     </div>
-    ${groups}
+    <div class="subjectpick">${cards}</div>
     <div class="hometools">
       <button class="tool" id="soundBtn" onclick="toggleSound()">${soundOn ? '🔊 Âm thanh: Bật' : '🔇 Âm thanh: Tắt'}</button>
       <button class="tool danger" onclick="resetProgress()">🗑️ Xoá tiến độ</button>
     </div>`;
+  window.scrollTo(0,0);
+}
+
+/* Màn hình danh sách ĐỀ của một môn */
+function openSubject(sub){
+  const items = QUIZZES.filter(q=>q.subject===sub);
+  const m = SUBJECT_META[sub] || {name:sub, emoji:'📚'};
+  app.innerHTML = `
+    <div class="top">
+      <button class="back" onclick="home()">←</button>
+      <div class="crumb">${m.emoji} ${m.name} · ${items.length} đề</div>
+    </div>
+    <div class="subject" style="margin-top:8px">${items.map(quizCard).join('')}</div>`;
   window.scrollTo(0,0);
 }
 
@@ -688,8 +704,9 @@ function nextQ(){
 }
 
 function confirmExit(){
-  if(idx===0 && score===0){ home(); return; }
-  if(confirm('Bé muốn dừng bài này và quay về trang chính?')) home();
+  const backToList = () => openSubject(cur.subject);
+  if(idx===0 && score===0){ backToList(); return; }
+  if(confirm('Bé muốn dừng bài này và chọn đề khác?')) backToList();
 }
 
 /* ================= KẾT QUẢ ================= */
@@ -728,7 +745,8 @@ async function showResult(){
       </div>` : ''}
       <div class="rbtns">
         <button class="rbtn primary" onclick="startQuiz('${cur.id}')">🔁 Làm lại đề này</button>
-        <button class="rbtn" onclick="home()">🏠 Về trang chính</button>
+        <button class="rbtn" onclick="openSubject('${cur.subject}')">📚 Chọn đề khác</button>
+        <button class="rbtn" onclick="home()">🏠 Trang chính</button>
       </div>
     </div>`;
   if(ratio>=0.8) dropConfetti(26);
