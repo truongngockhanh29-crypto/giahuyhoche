@@ -60,6 +60,8 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .subjcard .sc-emoji{font-size:46px;line-height:1;flex:none}
 .subjcard .sc-name{font-family:'Baloo 2',cursive;font-size:26px;color:var(--ink-dark);line-height:1.1}
 .subjcard .sc-meta{font-size:14px;color:#8a8272;font-weight:700;margin-top:4px}
+.subjcard .sc-stars{display:inline-block;margin-top:8px;font-weight:800;font-size:13px;color:#a8760a;
+  background:#fff8e6;border:2px solid var(--star);border-radius:999px;padding:3px 11px}
 .subjcard .sc-arrow{margin-left:auto;flex:none;font-family:'Baloo 2',cursive;font-size:36px;color:var(--ink);line-height:1}
 .subjcard.tv{border-color:var(--red);box-shadow:0 5px 0 var(--red)}
 .subjcard.tv:active{box-shadow:0 1px 0 var(--red)}
@@ -473,21 +475,25 @@ function home(){
     const items = QUIZZES.filter(q=>q.subject===sub);
     const m = SUBJECT_META[sub] || {name:sub, emoji:'📚'};
     const done = items.filter(q=>best[q.id]!=null).length;
+    const stars = items.reduce((s,q)=> s + (best[q.id]||0), 0);       // tổng điểm tốt nhất
+    const maxStars = items.reduce((s,q)=> s + q.questions.length, 0); // số sao tối đa của môn
     return `<div class="subjcard ${sub==='tv'?'tv':''}" onclick="openSubject('${sub}')">
       <div class="sc-emoji">${m.emoji}</div>
       <div class="sc-body">
         <div class="sc-name">${m.name}</div>
         <div class="sc-meta">${items.length} đề · đã làm ${done}/${items.length}</div>
+        <div class="sc-stars">⭐ ${stars}/${maxStars} sao</div>
       </div>
       <div class="sc-arrow">›</div>
     </div>`;
   }).join('');
+  const allStars = QUIZZES.reduce((s,q)=> s + (best[q.id]||0), 0); // tổng = Toán + Tiếng Việt
   app.innerHTML = `
     <div class="hero">
       <div class="mascot">🦉</div>
       <h1>Bé Ôn Tập <span class="accent">Hè</span></h1>
       <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
-      <div class="starbar">⭐ ${totalStars} ngôi sao đã đạt được</div>
+      <div class="starbar">⭐ ${allStars} ngôi sao đã đạt được</div>
     </div>
     <div class="subjectpick">${cards}</div>
     <div class="hometools">
@@ -714,7 +720,7 @@ async function showResult(){
   const total = cur.questions.length;
   const prevBest = best[cur.id] ?? -1;
   if(score > prevBest){ best[cur.id] = score; }
-  totalStars += score;
+  totalStars = QUIZZES.reduce((s,q)=> s + (best[q.id]||0), 0); // tổng điểm tốt nhất mọi đề
   await saveProgress();
 
   const ratio = score/total;
