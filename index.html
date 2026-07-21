@@ -2,7 +2,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFF9EE">
+<meta name="description" content="Bé ôn tập hè Lớp 1 lên Lớp 2 – Toán và Tiếng Việt theo sách Kết nối tri thức.">
 <title>Bé Ôn Tập – Lớp 1 lên Lớp 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -338,15 +340,29 @@ const QUIZZES = [
 /* ================= TRẠNG THÁI & LƯU ĐIỂM ================= */
 const app = document.getElementById('app');
 let best = {}, totalStars = 0;
+const STORE_KEY = 'betap-progress';
+
+/* Lưu tiến độ: ưu tiên host storage (nếu có), nếu không thì dùng localStorage
+   để điểm số & số sao vẫn được giữ lại khi mở file trên trình duyệt thường. */
+const Store = {
+  async get(key){
+    try{ if(window.storage && window.storage.get){ const r = await window.storage.get(key); return r && r.value != null ? r.value : null; } }catch(e){}
+    try{ return localStorage.getItem(key); }catch(e){ return null; }
+  },
+  async set(key, val){
+    try{ if(window.storage && window.storage.set){ await window.storage.set(key, val); return; } }catch(e){}
+    try{ localStorage.setItem(key, val); }catch(e){}
+  }
+};
 
 async function loadSaved(){
   try{
-    const r = await window.storage.get('betap-progress');
-    if(r && r.value){ const d = JSON.parse(r.value); best = d.best||{}; totalStars = d.stars||0; }
+    const raw = await Store.get(STORE_KEY);
+    if(raw){ const d = JSON.parse(raw); best = d.best || {}; totalStars = d.stars || 0; }
   }catch(e){ /* chưa có dữ liệu — bắt đầu mới */ }
 }
 async function saveProgress(){
-  try{ await window.storage.set('betap-progress', JSON.stringify({best, stars: totalStars})); }catch(e){}
+  await Store.set(STORE_KEY, JSON.stringify({best, stars: totalStars}));
 }
 
 /* ================= MÀN HÌNH CHÍNH ================= */
@@ -356,7 +372,7 @@ function home(){
     return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
       <div><div class="t">${qz.title}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
-      <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${QUIZZES.find(x=>x.id===qz.id).questions.length}</b>`:''}</div>
+      <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${qz.questions.length}</b>`:''}</div>
     </div>`;
   }).join('');
   app.innerHTML = `
@@ -600,6 +616,16 @@ function dropConfetti(n){
     setTimeout(()=>s.remove(), 3200);
   }
 }
+
+/* ================= BÀN PHÍM (cho câu điền số) ================= */
+document.addEventListener('keydown', e=>{
+  const show = document.getElementById('numshow');
+  if(!show) return;                                   // chỉ dùng khi đang ở câu điền số
+  if(document.querySelector('.numpad .pad:disabled')) return; // đã trả lời xong
+  if(e.key >= '0' && e.key <= '9'){ tapPad(e.key); }
+  else if(e.key === 'Backspace'){ tapPad('del'); e.preventDefault(); }
+  else if(e.key === 'Enter'){ checkNum(); }
+});
 
 /* ================= KHỞI ĐỘNG ================= */
 loadSaved().then(home);
