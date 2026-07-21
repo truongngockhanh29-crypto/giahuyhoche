@@ -2,7 +2,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FFF9EE">
+<meta name="description" content="Bé ôn tập hè Lớp 1 lên Lớp 2 – Toán và Tiếng Việt theo sách Kết nối tri thức.">
 <title>Bé Ôn Tập – Lớp 1 lên Lớp 2</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -163,6 +165,23 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 
 .confetti{position:fixed;top:-12px;font-size:22px;z-index:50;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(560deg)}}
+
+/* ---- công cụ trang chính ---- */
+.hometools{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.tool{flex:1;min-width:150px;border:2px solid var(--ink);background:#fff;color:var(--ink-dark);
+  border-radius:14px;padding:12px;font-family:'Baloo 2',cursive;font-size:15px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.tool:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.tool.danger{border-color:var(--red);color:#a02730;box-shadow:0 3px 0 var(--red)}
+
+/* ---- xem lại câu sai ---- */
+.review{max-width:340px;margin:6px auto 4px;text-align:left}
+.rvtitle{font-family:'Baloo 2',cursive;color:#a02730;font-size:17px;text-align:center;margin-bottom:10px}
+.rvitem{background:#fff;border:2px solid var(--line);border-left:5px solid var(--red);
+  border-radius:12px;padding:11px 13px;margin-bottom:10px}
+.rvq{font-weight:800;color:var(--ink-dark);font-size:15px;margin-bottom:4px}
+.rva{font-size:14px;color:#1e7a47;font-weight:700}
+.rve{font-size:13px;color:#7a715e;font-weight:600;margin-top:3px}
+
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important}
 }
@@ -337,16 +356,70 @@ const QUIZZES = [
 
 /* ================= TRẠNG THÁI & LƯU ĐIỂM ================= */
 const app = document.getElementById('app');
-let best = {}, totalStars = 0;
+let best = {}, totalStars = 0, soundOn = true;
+const STORE_KEY = 'betap-progress';
+
+/* Trộn ngẫu nhiên (Fisher–Yates) — chống học vẹt theo vị trí khi làm lại. */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+
+/* ---- Âm thanh (Web Audio, không cần file) ---- */
+let audioCtx = null;
+function tone(freq, start, dur, type, vol){
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(audioCtx.destination);
+  const t=audioCtx.currentTime+start;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(vol, t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  o.start(t); o.stop(t+dur+0.03);
+}
+function beep(kind){
+  if(!soundOn) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    if(kind==='ok'){ tone(660,0,0.15,'triangle',0.18); tone(988,0.12,0.24,'triangle',0.18); }
+    else { tone(220,0,0.24,'sine',0.16); tone(160,0.1,0.3,'sine',0.16); }
+  }catch(e){}
+}
+async function toggleSound(){
+  soundOn = !soundOn;
+  await saveProgress();
+  const b=document.getElementById('soundBtn');
+  if(b) b.textContent = soundOn ? '🔊 Âm thanh: Bật' : '🔇 Âm thanh: Tắt';
+  if(soundOn) beep('ok');
+}
+
+/* Lưu tiến độ: ưu tiên host storage (nếu có), nếu không thì dùng localStorage
+   để điểm số & số sao vẫn được giữ lại khi mở file trên trình duyệt thường. */
+const Store = {
+  async get(key){
+    try{ if(window.storage && window.storage.get){ const r = await window.storage.get(key); return r && r.value != null ? r.value : null; } }catch(e){}
+    try{ return localStorage.getItem(key); }catch(e){ return null; }
+  },
+  async set(key, val){
+    try{ if(window.storage && window.storage.set){ await window.storage.set(key, val); return; } }catch(e){}
+    try{ localStorage.setItem(key, val); }catch(e){}
+  }
+};
 
 async function loadSaved(){
   try{
-    const r = await window.storage.get('betap-progress');
-    if(r && r.value){ const d = JSON.parse(r.value); best = d.best||{}; totalStars = d.stars||0; }
+    const raw = await Store.get(STORE_KEY);
+    if(raw){ const d = JSON.parse(raw); best = d.best || {}; totalStars = d.stars || 0; soundOn = d.sound !== false; }
   }catch(e){ /* chưa có dữ liệu — bắt đầu mới */ }
 }
 async function saveProgress(){
-  try{ await window.storage.set('betap-progress', JSON.stringify({best, stars: totalStars})); }catch(e){}
+  await Store.set(STORE_KEY, JSON.stringify({best, stars: totalStars, sound: soundOn}));
+}
+async function resetProgress(){
+  if(!confirm('Xoá toàn bộ điểm số và số sao đã lưu? Không thể hoàn tác.')) return;
+  best = {}; totalStars = 0;
+  await saveProgress();
+  home();
 }
 
 /* ================= MÀN HÌNH CHÍNH ================= */
@@ -356,7 +429,7 @@ function home(){
     return `<div class="card ${qz.subject==='tv'?'tv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
       <div><div class="t">${qz.title}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
-      <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${QUIZZES.find(x=>x.id===qz.id).questions.length}</b>`:''}</div>
+      <div class="best">${b!=null?`Điểm tốt nhất<b>${b}/${qz.questions.length}</b>`:''}</div>
     </div>`;
   }).join('');
   app.innerHTML = `
@@ -366,15 +439,22 @@ function home(){
       <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
       <div class="starbar">⭐ ${totalStars} ngôi sao đã đạt được</div>
     </div>
-    <div class="subject">${cards}</div>`;
+    <div class="subject">${cards}</div>
+    <div class="hometools">
+      <button class="tool" id="soundBtn" onclick="toggleSound()">${soundOn ? '🔊 Âm thanh: Bật' : '🔇 Âm thanh: Tắt'}</button>
+      <button class="tool danger" onclick="resetProgress()">🗑️ Xoá tiến độ</button>
+    </div>`;
   window.scrollTo(0,0);
 }
 
 /* ================= LÀM BÀI ================= */
-let cur = null, idx = 0, score = 0, numInput = '';
+let cur = null, idx = 0, score = 0, numInput = '', wrongs = [];
 
 function startQuiz(id){
-  cur = QUIZZES.find(q=>q.id===id); idx = 0; score = 0;
+  const quiz = QUIZZES.find(q=>q.id===id);
+  // Trộn thứ tự câu (giữ nguyên dữ liệu gốc bằng cách xáo trên bản sao)
+  cur = Object.assign({}, quiz, {questions: shuffle(quiz.questions.slice())});
+  idx = 0; score = 0; wrongs = [];
   renderQuestion();
 }
 
@@ -395,8 +475,9 @@ function renderQuestion(){
     </div>`;
   } else if(q.type === 'order'){
     orderPicked = [];
+    const poolOrder = shuffle(q.items.map((_,i)=>i));
     body = `<div class="slots" id="slots">${q.items.map(()=>'<div class="slot">·</div>').join('')}</div>
-      <div class="pool" id="pool">${q.items.map((it,i)=>`<button class="pill" id="pill${i}" onclick="tapOrder(${i})">${it}</button>`).join('')}</div>
+      <div class="pool" id="pool">${poolOrder.map(i=>`<button class="pill" id="pill${i}" onclick="tapOrder(${i})">${q.items[i]}</button>`).join('')}</div>
       <div class="ctrlrow">
         <button class="pad" onclick="resetOrder()">↺ Xếp lại</button>
         <button class="pad act" onclick="checkOrder()">✔ Xong</button>
@@ -405,13 +486,15 @@ function renderQuestion(){
     matchSel = -1; matchPairs = {};
     body = `<div class="matchgrid">
       <div>${q.left.map((l,i)=>`<button class="mbtn" id="L${i}" onclick="tapLeft(${i})">${l}</button>`).join('')}</div>
-      <div>${q.right.map((r,j)=>`<button class="mbtn" id="R${j}" onclick="tapRight(${j})">${r}</button>`).join('')}</div>
+      <div>${shuffle(q.right.map((_,j)=>j)).map(j=>`<button class="mbtn" id="R${j}" onclick="tapRight(${j})">${q.right[j]}</button>`).join('')}</div>
     </div>
     <button class="pad act" style="width:100%;margin-top:12px" onclick="checkMatch()">✔ Xong</button>`;
   } else {
     const keys = ['A','B','C','D'];
+    // Trộn vị trí đáp án; data-oi giữ chỉ số gốc để chấm đúng
+    const optOrder = shuffle(q.a.map((_,i)=>i));
     body = `<div class="answers">
-      ${q.a.map((opt,i)=>`<button class="ans" id="ans${i}" onclick="checkChoice(${i})"><span class="key">${keys[i]}</span>${opt}</button>`).join('')}
+      ${optOrder.map((oi,disp)=>`<button class="ans" data-oi="${oi}" onclick="checkChoice(${oi})"><span class="key">${keys[disp]}</span>${q.a[oi]}</button>`).join('')}
     </div>`;
   }
   app.innerHTML = `
@@ -515,24 +598,34 @@ function checkMatch(){
 function checkChoice(i){
   const q = cur.questions[idx];
   const right = i === q.c;
-  document.querySelectorAll('.ans').forEach((b,bi)=>{
+  document.querySelectorAll('.ans').forEach(b=>{
+    const oi = +b.dataset.oi;
     b.disabled = true;
-    if(bi === q.c) b.classList.add('correct');
-    else if(bi === i && !right) b.classList.add('wrong');
+    if(oi === q.c) b.classList.add('correct');
+    else if(oi === i && !right) b.classList.add('wrong');
     else b.classList.add('dim');
   });
   finish(right, q);
 }
 
+function correctAnswerText(q){
+  if(q.type === 'num') return q.c;
+  if(q.type === 'order') return q.c.join('  ');
+  if(q.type === 'match') return q.left.map((l,i)=>`${l} → ${q.right[q.pairs[i]]}`).join('; ');
+  return q.a[q.c];
+}
+
 function finish(right, q){
   const fb = document.getElementById('fb');
   const praise = ['Giỏi quá! 🎉','Chính xác! 🌟','Tuyệt vời! 👏','Bé làm đúng rồi! 💯'];
+  beep(right ? 'ok' : 'no');
   if(right){
     score++;
     fb.className = 'feedback ok';
     fb.innerHTML = praise[Math.floor(Math.random()*praise.length)] + '<br><span style="font-weight:700;font-size:14px">' + q.e + '</span>';
     dropConfetti(6);
   } else {
+    wrongs.push({q:q.q, correct:correctAnswerText(q), e:q.e});
     fb.className = 'feedback no';
     fb.innerHTML = 'Chưa đúng, không sao nhé! 💪<br><span style="font-weight:700;font-size:14px">' + q.e + '</span>';
   }
@@ -578,6 +671,14 @@ async function showResult(){
         <div class="msg">${msg}</div>
         ${score > prevBest && prevBest >= 0 ? '<div class="msg" style="color:var(--green)">🎉 Kỷ lục mới!</div>':''}
       </div>
+      ${wrongs.length ? `<div class="review">
+        <div class="rvtitle">📌 Xem lại câu chưa đúng (${wrongs.length})</div>
+        ${wrongs.map(w=>`<div class="rvitem">
+          <div class="rvq">${w.q}</div>
+          <div class="rva">✅ Đáp án đúng: <b>${w.correct}</b></div>
+          <div class="rve">${w.e}</div>
+        </div>`).join('')}
+      </div>` : ''}
       <div class="rbtns">
         <button class="rbtn primary" onclick="startQuiz('${cur.id}')">🔁 Làm lại đề này</button>
         <button class="rbtn" onclick="home()">🏠 Về trang chính</button>
@@ -600,6 +701,16 @@ function dropConfetti(n){
     setTimeout(()=>s.remove(), 3200);
   }
 }
+
+/* ================= BÀN PHÍM (cho câu điền số) ================= */
+document.addEventListener('keydown', e=>{
+  const show = document.getElementById('numshow');
+  if(!show) return;                                   // chỉ dùng khi đang ở câu điền số
+  if(document.querySelector('.numpad .pad:disabled')) return; // đã trả lời xong
+  if(e.key >= '0' && e.key <= '9'){ tapPad(e.key); }
+  else if(e.key === 'Backspace'){ tapPad('del'); e.preventDefault(); }
+  else if(e.key === 'Enter'){ checkNum(); }
+});
 
 /* ================= KHỞI ĐỘNG ================= */
 loadSaved().then(home);
