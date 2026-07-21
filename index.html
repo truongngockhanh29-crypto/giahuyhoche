@@ -67,6 +67,10 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .subjcard.tv:active{box-shadow:0 1px 0 var(--red)}
 .subjcard.tv .sc-name{color:#a02730}
 .subjcard.tv .sc-arrow{color:var(--red)}
+.subjcard .donebadge{display:inline-block;margin-top:9px;font-weight:800;font-size:12.5px;color:#fff;
+  background:var(--green);border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 #2e8b57}
+.subjcard.done{border-color:var(--green);box-shadow:0 5px 0 var(--green)}
+.subjcard.done:active{box-shadow:0 1px 0 var(--green)}
 .card{
   background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:16px 18px;
   box-shadow:0 4px 0 var(--ink);cursor:pointer;display:flex;gap:14px;align-items:center;
@@ -660,12 +664,14 @@ function home(){
     const done = items.filter(q=>best[q.id]!=null).length;
     const stars = items.reduce((s,q)=> s + (best[q.id]||0), 0);       // tổng điểm tốt nhất
     const maxStars = items.reduce((s,q)=> s + q.questions.length, 0); // số sao tối đa của môn
-    return `<div class="subjcard ${sub==='tv'?'tv':''}" onclick="openSubject('${sub}')">
+    const mastered = items.length>0 && items.every(q=> best[q.id]===q.questions.length); // mọi đề đạt tuyệt đối
+    return `<div class="subjcard ${sub==='tv'?'tv':''} ${mastered?'done':''}" onclick="openSubject('${sub}')">
       <div class="sc-emoji">${m.emoji}</div>
       <div class="sc-body">
         <div class="sc-name">${m.name}</div>
         <div class="sc-meta">${items.length} đề · đã làm ${done}/${items.length}</div>
         <div class="sc-stars">⭐ ${stars}/${maxStars} sao</div>
+        ${mastered ? '<div class="donebadge">🏅 Hoàn thành 100%</div>' : ''}
       </div>
       <div class="sc-arrow">›</div>
     </div>`;
