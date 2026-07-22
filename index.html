@@ -59,7 +59,9 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .subjcard:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 .subjcard .sc-emoji{font-size:46px;line-height:1;flex:none}
 .subjcard .sc-name{font-family:'Baloo 2',cursive;font-size:26px;color:var(--ink-dark);line-height:1.1}
+.subjcard .sc-source{font-size:12px;color:#a08e6a;font-weight:700;font-style:italic;margin-top:2px}
 .subjcard .sc-meta{font-size:14px;color:#8a8272;font-weight:700;margin-top:4px}
+.srcnote{font-size:13px;color:#8a8272;font-weight:700;font-style:italic;margin:4px 2px 0;text-align:center}
 .subjcard .sc-stars{display:inline-block;margin-top:8px;font-weight:800;font-size:13px;color:#a8760a;
   background:#fff8e6;border:2px solid var(--star);border-radius:999px;padding:3px 11px}
 .subjcard .sc-arrow{margin-left:auto;flex:none;font-family:'Baloo 2',cursive;font-size:36px;color:var(--ink);line-height:1}
@@ -723,9 +725,9 @@ async function resetProgress(){
 
 /* ================= MÀN HÌNH CHÍNH ================= */
 const SUBJECT_META = {
-  toan:{name:'Toán', emoji:'🔢'},
-  tv:{name:'Tiếng Việt', emoji:'📖'},
-  en:{name:'Tiếng Anh', emoji:'🇬🇧'},
+  toan:{name:'Toán', emoji:'🔢', source:'Kết nối tri thức'},
+  tv:{name:'Tiếng Việt', emoji:'📖', source:'Kết nối tri thức'},
+  en:{name:'Tiếng Anh', emoji:'🇬🇧', source:'chương trình Bình Minh'},
 };
 function subjClass(sub){ return sub==='tv' ? 'tv' : sub==='en' ? 'en' : ''; }
 
@@ -769,6 +771,7 @@ function home(){
       <div class="sc-emoji">${m.emoji}</div>
       <div class="sc-body">
         <div class="sc-name">${m.name}</div>
+        ${m.source ? `<div class="sc-source">theo ${m.source}</div>` : ''}
         <div class="sc-meta">${items.length} đề · đã làm ${done}/${items.length}</div>
         <div class="sc-stars">⭐ ${stars}/${maxStars} sao</div>
         ${mastered ? '<div class="donebadge">🏅 Hoàn thành 100%</div>' : ''}
@@ -781,7 +784,7 @@ function home(){
     <div class="hero">
       <div class="mascot">🦉</div>
       <h1>Bé Ôn Tập <span class="accent">Hè</span></h1>
-      <p>Lớp 1 lên Lớp 2 · sách Kết nối tri thức</p>
+      <p>Lớp 1 lên Lớp 2 · Ôn tập hè</p>
       <div class="starbar">⭐ ${allStars} ngôi sao đã đạt được</div>
     </div>
     <div class="subjectpick">${cards}</div>
@@ -801,6 +804,7 @@ function openSubject(sub){
       <button class="back" onclick="home()">←</button>
       <div class="crumb">${m.emoji} ${m.name} · ${items.length} đề</div>
     </div>
+    ${m.source ? `<div class="srcnote">📚 Theo ${m.source}</div>` : ''}
     <div class="subject" style="margin-top:8px">${items.map(quizCard).join('')}</div>`;
   window.scrollTo(0,0);
 }
