@@ -67,6 +67,10 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .subjcard.tv:active{box-shadow:0 1px 0 var(--red)}
 .subjcard.tv .sc-name{color:#a02730}
 .subjcard.tv .sc-arrow{color:var(--red)}
+.subjcard.en{border-color:#8250c4;box-shadow:0 5px 0 #8250c4}
+.subjcard.en:active{box-shadow:0 1px 0 #8250c4}
+.subjcard.en .sc-name{color:#5b2ea6}
+.subjcard.en .sc-arrow{color:#8250c4}
 .subjcard .donebadge{display:inline-block;margin-top:9px;font-weight:800;font-size:12.5px;color:#fff;
   background:var(--green);border-radius:999px;padding:4px 12px;box-shadow:0 2px 0 #2e8b57}
 .subjcard.done{border-color:var(--green);box-shadow:0 5px 0 var(--green)}
@@ -83,6 +87,9 @@ h1,h2,.display{font-family:'Baloo 2',cursive}
 .card.tv{border-color:var(--red);box-shadow:0 4px 0 var(--red)}
 .card.tv:active{box-shadow:0 1px 0 var(--red)}
 .card.tv .t{color:#a02730}
+.card.en{border-color:#8250c4;box-shadow:0 4px 0 #8250c4}
+.card.en:active{box-shadow:0 1px 0 #8250c4}
+.card.en .t{color:#5b2ea6}
 .card .best{margin-left:auto;flex:none;text-align:center;font-size:12px;font-weight:800;color:#a8760a;
   display:flex;flex-direction:column;align-items:center;gap:2px}
 .card .best .rankstars{font-size:14px;letter-spacing:1px;line-height:1;white-space:nowrap}
@@ -555,6 +562,50 @@ const QUIZZES = [
   {q:'Câu nào dùng dấu phẩy đúng?', a:['Ông tưới nước bắt sâu cho cây.','Ông tưới nước, bắt sâu cho cây.','Ông, tưới nước bắt sâu cho cây.','Ông tưới, nước bắt sâu cho cây.'], c:1, e:'Dấu phẩy ngăn cách hai việc: "tưới nước, bắt sâu".'},
   {q:'Từ trái nghĩa với "ngọt" là:', a:['bùi','đắng','thơm','mềm'], c:1, e:'Ngọt trái nghĩa với đắng.'},
  ]
+},
+{
+ id:'en1', subject:'en', icon:'🐶', title:'Tiếng Anh – Con vật (Animals)',
+ desc:'Học tên con vật bằng tiếng Anh',
+ questions:[
+  {q:'"Con mèo" tiếng Anh là gì?', a:['dog','cat','fish','bird'], c:1, e:'Con mèo = cat.'},
+  {q:'"Con chó" tiếng Anh là gì?', a:['dog','duck','cow','cat'], c:0, e:'Con chó = dog.'},
+  {q:'"Con cá" tiếng Anh là gì?', a:['frog','fish','fox','hen'], c:1, e:'Con cá = fish.'},
+  {q:'"Con chim" tiếng Anh là gì?', a:['bird','bear','bee','cat'], c:0, e:'Con chim = bird.'},
+  {q:'Từ "elephant" nghĩa là con gì?', a:['Con voi','Con hổ','Con gà','Con vịt'], c:0, e:'elephant = con voi.'},
+  {q:'Từ "duck" nghĩa là con gì?', a:['Con vịt','Con chó','Con bò','Con ngựa'], c:0, e:'duck = con vịt.'},
+  {q:'Nối từ tiếng Anh với con vật đúng:', type:'match', left:['cat','dog','fish'], right:['con chó','con cá','con mèo'], pairs:{0:2,1:0,2:1}, e:'cat = con mèo, dog = con chó, fish = con cá.'},
+  {q:'Nối từ tiếng Anh với nghĩa:', type:'match', left:['cow','pig','hen'], right:['con lợn','con bò','con gà mái'], pairs:{0:1,1:0,2:2}, e:'cow = con bò, pig = con lợn, hen = con gà mái.'},
+ ]
+},
+{
+ id:'en2', subject:'en', icon:'🎨', title:'Tiếng Anh – Màu sắc & Số đếm',
+ desc:'Colors & Numbers 1–10',
+ questions:[
+  {q:'"Màu đỏ" tiếng Anh là gì?', a:['blue','red','green','yellow'], c:1, e:'Màu đỏ = red.'},
+  {q:'"Màu xanh da trời" tiếng Anh là gì?', a:['blue','black','brown','pink'], c:0, e:'Xanh da trời = blue.'},
+  {q:'Từ "yellow" là màu gì?', a:['Màu vàng','Màu tím','Màu đen','Màu trắng'], c:0, e:'yellow = màu vàng.'},
+  {q:'Từ "green" là màu gì?', a:['Màu xanh lá','Màu hồng','Màu nâu','Màu cam'], c:0, e:'green = màu xanh lá cây.'},
+  {q:'Số "three" là số mấy?', type:'num', c:'3', e:'three = 3.'},
+  {q:'Số "seven" là số mấy?', type:'num', c:'7', e:'seven = 7.'},
+  {q:'"Số 5" tiếng Anh là gì?', a:['four','five','nine','six'], c:1, e:'5 = five.'},
+  {q:'Nối số tiếng Anh với chữ số:', type:'match', left:['one','two','ten'], right:['2','10','1'], pairs:{0:2,1:0,2:1}, e:'one = 1, two = 2, ten = 10.'},
+  {q:'Nối màu với nghĩa:', type:'match', left:['black','white','pink'], right:['màu trắng','màu hồng','màu đen'], pairs:{0:2,1:0,2:1}, e:'black = đen, white = trắng, pink = hồng.'},
+  {q:'Số "eight" cộng số "two" bằng mấy?', type:'num', c:'10', e:'eight (8) + two (2) = 10.'},
+ ]
+},
+{
+ id:'en3', subject:'en', icon:'👋', title:'Tiếng Anh – Chào hỏi & Gia đình',
+ desc:'Greetings & Family',
+ questions:[
+  {q:'"Xin chào" tiếng Anh là gì?', a:['Bye','Hello','Sorry','Thanks'], c:1, e:'Xin chào = Hello (hoặc Hi).'},
+  {q:'"Tạm biệt" tiếng Anh là gì?', a:['Goodbye','Hello','Yes','No'], c:0, e:'Tạm biệt = Goodbye (Bye).'},
+  {q:'"Cảm ơn" tiếng Anh là gì?', a:['Please','Thank you','Hello','Sorry'], c:1, e:'Cảm ơn = Thank you.'},
+  {q:'Từ "mother" nghĩa là gì?', a:['Mẹ','Bố','Anh','Bà'], c:0, e:'mother = mẹ.'},
+  {q:'Từ "father" nghĩa là gì?', a:['Bố','Mẹ','Em','Ông'], c:0, e:'father = bố.'},
+  {q:'"Anh trai / em trai" tiếng Anh là gì?', a:['sister','brother','friend','teacher'], c:1, e:'brother = anh/em trai.'},
+  {q:'Khi được tặng quà, em nói gì bằng tiếng Anh?', a:['Sorry.','Thank you!','Goodbye.','No.'], c:1, e:'Nói lời cảm ơn: "Thank you!"'},
+  {q:'Nối từ tiếng Anh với nghĩa:', type:'match', left:['mother','father','sister'], right:['chị/em gái','mẹ','bố'], pairs:{0:1,1:2,2:0}, e:'mother = mẹ, father = bố, sister = chị/em gái.'},
+ ]
 }
 ];
 
@@ -627,7 +678,12 @@ async function resetProgress(){
 }
 
 /* ================= MÀN HÌNH CHÍNH ================= */
-const SUBJECT_META = { toan:{name:'Toán', emoji:'🔢'}, tv:{name:'Tiếng Việt', emoji:'📖'} };
+const SUBJECT_META = {
+  toan:{name:'Toán', emoji:'🔢'},
+  tv:{name:'Tiếng Việt', emoji:'📖'},
+  en:{name:'Tiếng Anh', emoji:'🇬🇧'},
+};
+function subjClass(sub){ return sub==='tv' ? 'tv' : sub==='en' ? 'en' : ''; }
 
 function isAdvanced(qz){ return qz.adv === true || /nâng cao/i.test(qz.title); }
 
@@ -647,7 +703,7 @@ function quizCard(qz){
   const best_ = b!=null
     ? `${starRow(starRating(b, qz.questions.length))}<span class="bscore">${b}/${qz.questions.length}</span>`
     : '';
-  return `<div class="card ${qz.subject==='tv'?'tv':''} ${isAdvanced(qz)?'adv':''}" onclick="startQuiz('${qz.id}')">
+  return `<div class="card ${subjClass(qz.subject)} ${isAdvanced(qz)?'adv':''}" onclick="startQuiz('${qz.id}')">
       <div class="icon">${qz.icon}</div>
       <div><div class="t">${shortTitle}${badge}</div><div class="d">${qz.desc} · ${qz.questions.length} câu</div></div>
       <div class="best">${best_}</div>
@@ -665,7 +721,7 @@ function home(){
     const stars = items.reduce((s,q)=> s + (best[q.id]||0), 0);       // tổng điểm tốt nhất
     const maxStars = items.reduce((s,q)=> s + q.questions.length, 0); // số sao tối đa của môn
     const mastered = items.length>0 && items.every(q=> best[q.id]===q.questions.length); // mọi đề đạt tuyệt đối
-    return `<div class="subjcard ${sub==='tv'?'tv':''} ${mastered?'done':''}" onclick="openSubject('${sub}')">
+    return `<div class="subjcard ${subjClass(sub)} ${mastered?'done':''}" onclick="openSubject('${sub}')">
       <div class="sc-emoji">${m.emoji}</div>
       <div class="sc-body">
         <div class="sc-name">${m.name}</div>
